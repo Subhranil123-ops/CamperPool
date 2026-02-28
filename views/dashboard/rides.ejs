@@ -7,7 +7,7 @@
                 <select name="from" class="form-select m-2" onchange="this.form.submit()">
                     <option value="">Select Starting Location</option>
                     <%for(option of fromOptions){%>
-                        <option value="<%=option%>"  <%=query.from===option?"selected":''%>>
+                        <option value="<%=option%>" <%=query.from===option?"selected":''%>>
                             <%=option%>
                         </option>
                         <%}%>
@@ -17,7 +17,7 @@
                 <select name="to" class="form-select m-2" onchange="this.form.submit()">
                     <option value="">Select Drop Location</option>
                     <%for(option of toOptions){%>
-                        <option value="<%=option%>"  <%=query.to===option?"selected":''%>>
+                        <option value="<%=option%>" <%=query.to===option?"selected":''%>>
                             <%=option%>
                         </option>
                         <%}%>
@@ -37,43 +37,55 @@
                 <select name="status" class="form-select m-2" onchange="this.form.submit()">
                     <option value="">Select Status</option>
                     <%for(option of statusOptions){%>
-                        <option value="<%=option%>"  <%=query.status===option?"selected":''%>>
+                        <option value="<%=option%>" <%=query.status===option?"selected":''%>>
                             <%=option%>
                         </option>
                         <%}%>
                 </select>
             </div>
             <div class="col-md-3">
-                <input type="date" class="form-control m-2" name="date" onchange="this.form.submit()" value="<%=query.date||''%>">
+                <input type="date" class="form-control m-2" name="date" onchange="this.form.submit()"
+                    value="<%=query.date||''%>">
             </div>
         </div>
+
     </form>
-    <div class="row mt-5">
-        <%for(ride of rides){%>
-            <div class="col-md-4 mt-3">
-                <a href="/rides/<%=ride._id%>" class="text-decoration-none">
-                    <div class="card shadow-sm rounded-3 p-2 mb-2">
-                        <span class="badge
+    <%if(rides.length===0){%>
+        <div class="text-center my-5">
+            <img src="/images/noMatch.webp" alt="noRides" class="img-fluid" style="max-width:250px; opacity:0.9;">
+            <h6 class="text-muted mt-3 ">No Rides matches your result</h6>
+            <p class="text-muted small">
+            Try adjusting your filters or selecting a different date.
+        </p>
+        </div>
+    <%}
+    else{%>
+        <div class="row mt-5">
+            <%for(ride of rides){%>
+                <div class="col-md-4 mt-3">
+                    <a href="/rides/<%=ride._id%>" class="text-decoration-none">
+                        <div class="card shadow-sm rounded-3 p-2 mb-2">
+                            <span class="badge
                         <%=ride.status==='full'?'bg-warning':
                         ride.status==='active'?'bg-success':
                         'bg-danger'%>">
-                        <%=ride.status%>
-                        </span>
-                        <div class="card-body">
-                            <p class="card-text">
-                                 <b>From </b>: <%=ride.from%>
-                            </p>
-                            <p class="card-text">
-                                <b>To </b>: <%=ride.to%>
-                            </p>
-                            <p class="card-text">
-                                 <b>Rider </b>: <%=ride?.driver?.username%>
-                            </p>
+                                <%=ride.status%>
+                            </span>
+                            <div class="card-body">
+                                <p class="card-text">
+                                   <b>📍 From :</b>
+                                    <%=ride.from%>
+                                </p>
+                                <p class="card-text">
+                                    <b>🎯 To : </b> <%=ride.to%>
+                                </p>
+                                <p class="card-text">
+                                    <b>👤 Rider : </b> <%=ride.driver?.username%>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <%}%>
-    </div>
-
-   
+                    </a>
+                </div>
+                <%}%>
+        </div>
+        <%}%>

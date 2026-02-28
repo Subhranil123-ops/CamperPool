@@ -1,38 +1,46 @@
 <%layout("layouts/boilerplate")%>
-  <div class="card mt-5">
-    <div class="card-header">
-      Ride Details
+  <div class="card mt-5 shadow-sm rounded-3">
+    <div class="card-header mb-3 fs-4">
+     🚗 Ride Details
     </div>
     <div class="card-body">
       <div class="row">
         <div class="col-md-6">
-          <p class="card-text">From : <%=ride.from%>
+          <p class="card-text"><b>📍 From :</b> <%=ride.from%>
           </p>
-          <p class="card-text">To : <%=ride.to%>
+          <p class="card-text"><b>🎯 To : </b> <%=ride.to%>
           </p>
-          <p class="card-text"> Vehicle : <%=ride.vehicle%>
+          <p class="card-text"><b>🚘 Vehicle : </b> <%=ride.vehicle%>
           </p>
-          <p class="card-text"> Rider : <%=ride.driver.username%>
+          <p class="card-text"><b>👤 Rider : </b> <%=ride.driver?.username%>
           </p>
           <%if(ride.passengers?.length>0){%>
-            <p class="card-text"> Passengers :
+            <p class="card-text"> <b>👥 Passengers : </b>
             <ul>
               <%for(passenger of ride.passengers){%>
                 <li>
-                  <%=passenger.username%>
+                  🙋 <%=passenger.username%>
                 </li>
                 <%}%>
             </ul>
             <%}%>
+            <%if(ride.passengers?.length===0){%>
+              <p><b>👥 Passengers : </b> No Passengers Yet </p>
+              <%}%>
         </div>
         <div class="col-md-6">
-          <p class="card-text"> Seats : <%=ride.available%>/<%=ride.total%> Available
+          <p class="card-text"><b>🪑 Seats : </b> <%=ride.available%>/<%=ride.total%> Available
           </p>
-          <p class="card-text"> Status : <%=ride.status%>
+          <p class="card-text"><b>📌 Status : </b> <span class="badge <%=ride.status==='active'?'bg-success':
+                                                                    ride.status==='cancelled'?'bg-warning':
+                                                                    'bg-danger'%>">
+                                                                    <%=ride.status%>
+                                                    </span>
+
           </p>
-          <p class="card-text"> Date : <%=ride.date.toISOString().split('T')[0]%>
+          <p class="card-text"><b>📅 Date : </b> <%=ride.date.toISOString().split('T')[0]%>
           </p>
-          <p class="card-text"> Time : <%=ride.time%>
+          <p class="card-text"><b>⏰ Time</b>  : <%=ride.time%>
           </p>
         </div>
       </div>
