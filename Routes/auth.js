@@ -3,7 +3,7 @@ const router = express.Router()
 const User = require('../models/userSchema.js');
 const passport = require("passport");
 const authController = require("../Controller/auth.js");
-const { registeredUserValidate, loggedInUserValidate, isLoggedIn } = require("../middlewares.js");
+const { registeredUserValidate, loggedInUserValidate, isLoggedIn, saveRedirect } = require("../middlewares.js");
 
 router
     .route("/register")
@@ -14,8 +14,11 @@ router
 
 router
     .route("/login")
-    .get(authController.renderLoginForm)
-    .post(loggedInUserValidate,
+    .get(
+        authController.renderLoginForm)
+    .post(
+        saveRedirect,
+        loggedInUserValidate,
         passport.authenticate("local", { failureRedirect: "/auth/login", failureFlash: true }),
         authController.Login
     );

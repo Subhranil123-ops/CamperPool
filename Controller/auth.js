@@ -27,8 +27,9 @@ module.exports.renderLoginForm = (req, res) => {
 }
 
 module.exports.Login = (req, res) => {
+    const redirect = res.locals.redirect || '/rides';
     req.flash("success", "You are successfully logged in !!");
-    res.redirect("/rides");
+    res.redirect(redirect);
 }
 
 module.exports.Logout = (req, res, next) => {
