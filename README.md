@@ -190,13 +190,26 @@ http://localhost:3000
 
 ## 📷 Screenshots
 
-### 🏠 Dashboard
+### Login Page
+![login](assets/screenshots/image-4.png)
 
+### Register Page
+![Register](assets/screenshots/image-5.png)
+
+### Available Rides
+![availableRides](assets/screenshots/image-3.png)
+
+### 🏠 Dashboard
+![dashboard](assets/screenshots/image.png)
 
 ### 🚗 Ride Details Page
-
+![deatails](assets/screenshots/image-1.png)
 
 ### ➕ Create Ride Form
+![newRide](assets/screenshots/image-2.png)
+
+### No Rides Found Page
+![noRides](assets/screenshots/image-6.png)
 
 ---
 
