@@ -14,7 +14,7 @@ CamperPool allows students to create, join, and manage rides efficiently within 
 
 ## 🔗 Live Demo
 
-🌍 https://camperpool-production.up.railway.app
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge&logo=railway)](https://camperpool-production.up.railway.app)
 
 ---
 
