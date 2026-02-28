@@ -20,6 +20,7 @@ CamperPool allows students to create, join, and manage rides efficiently within 
 
 ## 🎥 Project Demonstration
 
+[![Watch on YouTube](https://img.shields.io/badge/Watch%20on-YouTube-red?logo=youtube)](https://youtu.be/-zx49D9SlG4) 
 
 ---
 
@@ -29,6 +30,7 @@ CamperPool allows students to create, join, and manage rides efficiently within 
 Students travel individually every day, which increases transportation cost and fuel usage.
 There is no proper communication system for students to coordinate rides with each other.
 As a result, money is wasted and opportunities to build community connections are lost.
+
 - CamperPool solves this problem by providing a platform where students can communicate and coordinate rides when traveling between hostel and college.
 Students can share rides, reduce travel costs, and save fuel.
 At the same time, it helps build a stronger student community through shared travel experiences.
@@ -139,7 +141,10 @@ CamperPool/
 │ │── layouts/
 │ │  │── boilerplate.ejs
 │ └── error.ejs
-│
+|
+│── assets/
+|     │── screenshots
+|
 ├── middlewares.js # Custom middleware
 ├── index.js # Entry point
 ├── schema.js # Validation schemas
@@ -191,24 +196,31 @@ http://localhost:3000
 ## 📷 Screenshots
 
 ### Login Page
-![login](assets/screenshots/image-4.png)
+
+![login](assets/screenshots/image-5.png)
 
 ### Register Page
-![Register](assets/screenshots/image-5.png)
+
+![Register](assets/screenshots/image-4.png)
 
 ### Available Rides
-![availableRides](assets/screenshots/image-3.png)
+
+![availableRides](assets/screenshots/image-1.png)
 
 ### 🏠 Dashboard
+
 ![dashboard](assets/screenshots/image.png)
 
 ### 🚗 Ride Details Page
-![deatails](assets/screenshots/image-1.png)
 
-### ➕ Create Ride Form
 ![newRide](assets/screenshots/image-2.png)
 
+### ➕ Create Ride Form
+
+![newRide](assets/screenshots/image-3.png)
+
 ### No Rides Found Page
+
 ![noRides](assets/screenshots/image-6.png)
 
 ---
