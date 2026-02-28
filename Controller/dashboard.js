@@ -10,7 +10,8 @@ module.exports.renderDashboard = wrapAsync(async (req, res) => {
     const totalRidesCount = await Ride.countDocuments({ driver: req.user._id });
     const activeRidesCount = await Ride.countDocuments({
         driver: req.user._id,
-        date: { $gte: today }
+        date: { $gte: today },
+        status: "active"
     });
     res.render("dashboard/dashboard", {
         title: "Dashboard",
@@ -82,7 +83,6 @@ module.exports.showRide = wrapAsync(async (req, res) => {
     let ride = await Ride.findById(id)
         .populate('driver')
         .populate('passengers');
-    console.log(ride);
     if (!ride) throw new ExpressError(400, "Ride not found");
     res.render("./dashboard/showRide.ejs", {
         title: "Ride",
@@ -98,15 +98,15 @@ module.exports.joinRide = wrapAsync(async (req, res) => {
     let match = ride.passengers.some(el => req.user._id.equals(el));
     if (match) {
         req.flash("error", "You are already joined");
-        return res.redirect("/rides");
+        return res.redirect(`/rides/${id}`);
     }
     if (ride.available <= 0) {
         req.flash("error", "No available seats");
-        return res.redirect("/rides");
+        return res.redirect(`/rides/${id}`);
     }
     if (req.user._id.equals(ride.driver)) {
         req.flash("error", "You cannot join your own ride.");
-        return res.redirect("/rides");
+        return res.redirect(`/rides/${id}`);
     }
     ride.passengers.push(req.user._id);
     ride.available -= 1;
@@ -114,7 +114,7 @@ module.exports.joinRide = wrapAsync(async (req, res) => {
     let newRide = new Ride(ride);
     await newRide.save();
     req.flash("success", "You successfully joined the ride");
-    res.redirect('/rides');
+    res.redirect(`/rides/${id}`);
 });
 
 module.exports.renderEditForm = wrapAsync(async (req, res) => {
@@ -136,7 +136,7 @@ module.exports.leaveRide = wrapAsync(async (req, res) => {
     let { id } = req.params;
     let ride = await Ride.findById(id);
     if (!ride) throw new ExpressError(400, "No such Ride exists");
-    if (ride.passengers.includes(req.user._id)) {
+    if (ride.passengers.some(el => el.equals(req.user._id))) {
         await Ride.findByIdAndUpdate(id, {
             $pull: { passengers: req.user._id },
             $inc: { available: 1 }
