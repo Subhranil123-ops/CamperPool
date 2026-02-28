@@ -1,0 +1,70 @@
+<%layout("layouts/boilerplate")%>
+  <div class="card mt-5">
+    <div class="card-header">
+      Ride Details
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <p class="card-text">From : <%=ride.from%>
+          </p>
+          <p class="card-text">To : <%=ride.to%>
+          </p>
+          <p class="card-text"> Vehicle : <%=ride.vehicle%>
+          </p>
+          <p class="card-text"> Rider : <%=ride.driver.username%>
+          </p>
+          <%if(ride.passengers?.length>0){%>
+            <p class="card-text"> Passengers :
+            <ul>
+              <%for(passenger of ride.passengers){%>
+                <li>
+                  <%=passenger.username%>
+                </li>
+                <%}%>
+            </ul>
+            <%}%>
+        </div>
+        <div class="col-md-6">
+          <p class="card-text"> Seats : <%=ride.available%>/<%=ride.total%> Available
+          </p>
+          <p class="card-text"> Status : <%=ride.status%>
+          </p>
+          <p class="card-text"> Date : <%=ride.date.toISOString().split('T')[0]%>
+          </p>
+          <p class="card-text"> Time : <%=ride.time%>
+          </p>
+        </div>
+      </div>
+      <div class="d-flex justify-content-around">
+        <%if(ride.passengers>0 && ride.passengers.includes(user._id)){%>
+          <form action="/rides/<%=ride.id%>/leave" method="post">
+            <button class="btn btn-danger">Leave Ride</button>
+          </form>
+          <%}%>
+
+
+
+            <%if(user && !user._id.equals(ride.driver._id) && (ride.status!=="cancelled" && ride.status!=="full") ){%>
+              <form action="/rides/<%=ride._id%>/join" method="get">
+                <button class="btn btn-success">Join</button>
+              </form>
+              <%}%>
+
+                <%if(user && user._id.equals(ride.driver._id)){%>
+                  <form action="/rides/<%=ride._id%>/edit" method="get">
+                    <button class="btn btn-primary">Edit</button>
+                  </form>
+                  <%if(ride.status!=="cancelled"){%>
+                    <form action="/rides/<%=ride._id%>/cancel" method="post">
+                      <button class="btn btn-warning">Cancel</button>
+                    </form>
+                    <%}%>
+
+                      <form action="/rides/<%=ride._id%>?_method=DELETE" method="post">
+                        <button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+                      </form>
+                      <%}%>
+      </div>
+    </div>
+  </div>

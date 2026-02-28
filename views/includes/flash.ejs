@@ -1,0 +1,19 @@
+<%if(error.length>0 ){%>
+    <div class="alert alert-danger d-flex align-items-center">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <div>
+            <%=error[0]%>
+        </div>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <%}%>
+
+        <%if(success.length>0){%>
+            <div class="alert alert-success d-flex align-items-center">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <div>
+                    <%=success[0]%>
+                </div>
+                <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" ></button>
+            </div>
+            <%}%>

@@ -1,0 +1,20 @@
+*{
+    font-family: "Quicksand", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+body{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container{
+  flex: 1;
+}
+
+footer a:hover {
+    color: #0d6efd !important;
+}

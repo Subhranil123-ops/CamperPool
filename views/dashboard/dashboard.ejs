@@ -1,0 +1,63 @@
+<%layout("layouts/boilerplate")%>
+   <div class="row mt-5 g-4 justify-content-center">
+      <div class="col-md-4">
+         <%if(user){%>
+            <div class="card shadow-sm rounded-4 text-center p-2 h-100">
+               <div class="card-body">
+                  <h4 class="card-title">Welcome Back,<span class="fw-semibold">
+                        <%=user.username%>
+                     </span>
+                  </h4>
+                  <p class="text-muted">Hostel : <%=user.hostel%>
+                  </p>
+               </div>
+            </div>
+            <%}%>
+      </div>
+      <div class="col-md-4 ">
+         <div class="card shadow-sm rounded-3 p-2 text-center h-100">
+            <div class="card-body">
+               <h4 class="card-title">Rides Stats</h4>
+               <p class="card-text">Total Rides : <%=totalRidesCount%>
+               </p>
+               <p class="card-text">Active Rides : <%=activeRidesCount%>
+               </p>
+            </div>
+         </div>
+      </div>
+      <div class="col-md-4">
+         <div class="card shadow-sm rounded-3 p-2 text-center h-100  d-flex justify-content-center align-items-center">
+            <a href="/createRide"
+               class="d-inline-flex align-items-center justify-content-center bg-light shadow-sm rounded-circle border text-decoration-none"
+               style="width:55px; height:55px;">
+               <i class="fa-solid fa-plus fs-3 text-primary"></i>
+            </a>
+            <p>Create Ride</p>
+         </div>
+      </div>
+   </div>
+   <div class="row mt-5">
+      <h5>Your Rides</h5>
+      <%for(ride of rides){%>
+         <div class="col-md-4">
+            <a href="/rides/<%=ride._id%>" class="text-decoration-none">
+               <div class="card shadow-sm rounded-3 p-2 mb-2">
+                  <span class="badge 
+                  <%= ride.status === 'active' ? 'bg-success' :
+                        ride.status === 'full' ? 'bg-warning' :
+                        'bg-danger' %>">
+                     <%= ride.status %>
+                  </span>
+                  <div class="card-body">
+                     <p class="card-text">
+                        <b>From </b>: <%=ride.from%>
+                     </p>
+                     <p class="card-text">
+                        <b>To </b>: <%=ride.to%>
+                     </p>
+                  </div>
+               </div>
+            </a>
+         </div>
+         <%}%>
+   </div>
