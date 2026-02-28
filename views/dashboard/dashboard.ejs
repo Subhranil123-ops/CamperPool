@@ -1,14 +1,36 @@
 <%layout("layouts/boilerplate")%>
+<style>
+   .card {
+  transition: 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.rounded-circle {
+  transition: 0.2s ease;
+}
+
+.rounded-circle:hover {
+  background-color: #0d6efd !important;
+}
+
+.rounded-circle:hover i {
+  color: white !important;
+  }
+
+</style>
    <div class="row mt-5 g-4 justify-content-center">
       <div class="col-md-4">
          <%if(user){%>
             <div class="card shadow-sm rounded-4 text-center p-2 h-100">
                <div class="card-body">
-                  <h4 class="card-title">Welcome Back,<span class="fw-semibold">
+                  <h4 class="card-title fw-bold">👋 Welcome Back,<span class="fw-semibold">
                         <%=user.username%>
                      </span>
                   </h4>
-                  <p class="text-muted">Hostel : <%=user.hostel%>
+                  <p class="text-muted small">Hostel : <%=user.hostel%>
                   </p>
                </div>
             </div>
@@ -32,7 +54,7 @@
                style="width:55px; height:55px;">
                <i class="fa-solid fa-plus fs-3 text-primary"></i>
             </a>
-            <p>Create Ride</p>
+            <p class="mt-2 fw-semibold">Create Ride</p>
          </div>
       </div>
    </div>
