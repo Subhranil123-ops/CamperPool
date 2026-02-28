@@ -51,6 +51,9 @@ app.use((err, req, res, next) => {
         title: "Error"
     });
 });
+app.get("/", (req, res) => {
+  res.redirect("/rides");  
+});
 main()
     .then(() => app.listen(port, () => console.log("APP is connected to the port: ", port)))
     .catch((err) => console.log(err));
