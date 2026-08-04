@@ -7,15 +7,12 @@ const { registeredUserValidate, loggedInUserValidate, isLoggedIn, saveRedirect }
 
 router
     .route("/register")
-    .get(authController.renderRegisterForm)
     .post(registeredUserValidate,
         authController.Register
     );
 
 router
     .route("/login")
-    .get(
-        authController.renderLoginForm)
     .post(
         saveRedirect,
         loggedInUserValidate,

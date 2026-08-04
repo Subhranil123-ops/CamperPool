@@ -1,12 +1,6 @@
 const wrapAsync = require("../utils/wrapAsync");
 const User = require("../models/userSchema.js");
 
-module.exports.renderRegisterForm = (req, res) => {
-    res.render('./auth/register.ejs', {
-        title: "Register"
-    })
-}
-
 module.exports.Register = wrapAsync(async (req, res) => {
     const { username, password, hostel } = req.body;
     let newUser = new User({ username, hostel });
@@ -19,12 +13,6 @@ module.exports.Register = wrapAsync(async (req, res) => {
     req.flash("success", "Account created successfully! Please log in.");
     res.redirect("/auth/login");
 })
-
-module.exports.renderLoginForm = (req, res) => {
-    res.render("./auth/login.ejs", {
-        title: "Login"
-    });
-}
 
 module.exports.Login = (req, res) => {
     const redirect = res.locals.redirect || '/rides';

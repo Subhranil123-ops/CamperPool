@@ -1,119 +1,445 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
-import { Menu, X, CarFront } from "lucide-react";
+import { Link, NavLink } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import { Menu, X } from "lucide-react";
+
+import Logo from "../common/Logo";
 
 const navLinks = [
-  { name: "Home", path: "/" },
-  { name: "Find Lift", path: "/find-lift" },
-  { name: "Offer Lift", path: "/offer-lift" },
+    {
+        name: "Home",
+        path: "/",
+    },
+    {
+        name: "Find Lift",
+        path: "/find-lift",
+    },
+    {
+        name: "Offer Lift",
+        path: "/offer-lift",
+    },
 ];
 
-function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
+export default function Navbar() {
 
-  return (
-    <header className="sticky top-0 z-50 border-b bg-white shadow-sm">
-      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+    const [menuOpen, setMenuOpen] = useState(false);
 
-        {/* Logo */}
-        <NavLink
-          to="/"
-          className="flex items-center gap-2 text-xl font-bold text-blue-600"
+    return (
+
+        <header
+            className="
+                sticky
+                top-0
+                z-50
+                border-b
+                border-slate-200
+                bg-white/90
+                backdrop-blur-xl
+            "
         >
-          <CarFront size={28} />
-          CampusPool
-        </NavLink>
 
-        {/* Desktop Navigation */}
-        <div className="hidden items-center gap-8 md:flex">
-          {navLinks.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>
-                `transition-colors duration-200 ${
-                  isActive
-                    ? "font-semibold text-blue-600"
-                    : "text-gray-700 hover:text-blue-600"
-                }`
-              }
+            <nav
+                className="
+                    mx-auto
+                    flex
+                    h-20
+                    max-w-7xl
+                    items-center
+                    justify-between
+                    px-6
+                "
             >
-              {item.name}
-            </NavLink>
-          ))}
-        </div>
 
-        {/* Desktop Buttons */}
-        <div className="hidden items-center gap-3 md:flex">
-          <NavLink
-            to="/login"
-            className="rounded-lg border border-blue-600 px-4 py-2 font-medium text-blue-600 transition hover:bg-blue-50"
-          >
-            Login
-          </NavLink>
+                {/* Logo */}
 
-          <NavLink
-            to="/register"
-            className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700"
-          >
-            Register
-          </NavLink>
-        </div>
+                <Logo
+                    showTagline={false}
+                />
 
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
-      </nav>
+                {/* Desktop Navigation */}
 
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="border-t bg-white md:hidden">
-          <div className="flex flex-col p-4">
+                <div
+                    className="
+                        hidden
+                        items-center
+                        gap-2
+                        rounded-full
+                        border
+                        border-slate-200
+                        bg-slate-50
+                        p-2
+                        lg:flex
+                    "
+                >
 
-            {navLinks.map((item) => (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                onClick={() => setMenuOpen(false)}
-                className={({ isActive }) =>
-                  `rounded-lg px-3 py-3 ${
-                    isActive
-                      ? "bg-blue-50 font-semibold text-blue-600"
-                      : "hover:bg-gray-100"
-                  }`
+                    {
+
+                        navLinks.map((item)=>(
+
+                            <NavLink
+
+                                key={item.path}
+
+                                to={item.path}
+
+                                className={({isActive})=>
+
+                                    `
+                                        rounded-full
+                                        px-5
+                                        py-2.5
+                                        text-sm
+                                        font-semibold
+                                        transition-all
+                                        duration-300
+
+                                        ${
+
+                                            isActive
+
+                                            ?
+
+                                            "bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg"
+
+                                            :
+
+                                            "text-slate-600 hover:bg-white hover:text-slate-900"
+
+                                        }
+
+                                    `
+
+                                }
+
+                            >
+
+                                {item.name}
+
+                            </NavLink>
+
+                        ))
+
+                    }
+
+                </div>
+
+                {/* Desktop Buttons */}
+
+                <div
+                    className="
+                        hidden
+                        items-center
+                        gap-3
+                        lg:flex
+                    "
+                >
+
+                    <motion.div
+
+                        whileHover={{
+                            y:-2,
+                        }}
+
+                        whileTap={{
+                            scale:.97,
+                        }}
+
+                    >
+
+                        <Link
+
+                            to="/login"
+
+                            className="
+                                rounded-xl
+                                border
+                                border-slate-300
+                                px-5
+                                py-2.5
+                                font-semibold
+                                text-slate-700
+                                transition-all
+                                duration-300
+                                hover:border-blue-500
+                                hover:bg-blue-50
+                                hover:text-blue-700
+                            "
+
+                        >
+
+                            Login
+
+                        </Link>
+
+                    </motion.div>
+
+                    <motion.div
+
+                        whileHover={{
+                            y:-2,
+                        }}
+
+                        whileTap={{
+                            scale:.97,
+                        }}
+
+                    >
+
+                        <Link
+
+                            to="/register"
+
+                            className="
+                                rounded-xl
+                                bg-gradient-to-r
+                                from-blue-600
+                                to-cyan-500
+                                px-6
+                                py-2.5
+                                font-semibold
+                                text-white
+                                shadow-lg
+                                shadow-blue-500/25
+                                transition-all
+                                duration-300
+                                hover:shadow-blue-500/40
+                            "
+
+                        >
+
+                            Get Started
+
+                        </Link>
+
+                    </motion.div>
+
+                </div>
+
+                {/* Mobile Button */}
+
+                <motion.button
+
+                    whileTap={{
+                        scale:.9,
+                    }}
+
+                    onClick={()=>
+                        setMenuOpen(!menuOpen)
+                    }
+
+                    className="
+                        rounded-xl
+                        border
+                        border-slate-300
+                        bg-white
+                        p-3
+                        text-slate-700
+                        shadow-sm
+                        lg:hidden
+                    "
+
+                >
+
+                    {
+
+                        menuOpen
+
+                        ?
+
+                        <X size={24}/>
+
+                        :
+
+                        <Menu size={24}/>
+
+                    }
+
+                </motion.button>
+
+            </nav>
+
+                        <AnimatePresence>
+
+                {
+
+                    menuOpen && (
+
+                        <motion.div
+
+                            initial={{
+                                opacity: 0,
+                                y: -15,
+                            }}
+
+                            animate={{
+                                opacity: 1,
+                                y: 0,
+                            }}
+
+                            exit={{
+                                opacity: 0,
+                                y: -15,
+                            }}
+
+                            transition={{
+                                duration: .25,
+                            }}
+
+                            className="
+                                border-t
+                                border-slate-200
+                                bg-white
+                                lg:hidden
+                            "
+
+                        >
+
+                            <div
+                                className="
+                                    mx-auto
+                                    flex
+                                    max-w-7xl
+                                    flex-col
+                                    gap-2
+                                    px-6
+                                    py-6
+                                "
+                            >
+
+                                {
+
+                                    navLinks.map((item) => (
+
+                                        <NavLink
+
+                                            key={item.path}
+
+                                            to={item.path}
+
+                                            onClick={() =>
+                                                setMenuOpen(false)
+                                            }
+
+                                            className={({ isActive }) =>
+
+                                                `
+                                                    rounded-xl
+                                                    px-4
+                                                    py-3
+                                                    font-medium
+                                                    transition-all
+                                                    duration-300
+
+                                                    ${
+
+                                                        isActive
+
+                                                        ?
+
+                                                        "bg-gradient-to-r from-blue-600 to-cyan-500 text-white"
+
+                                                        :
+
+                                                        "text-slate-700 hover:bg-slate-100"
+
+                                                    }
+
+                                                `
+
+                                            }
+
+                                        >
+
+                                            {item.name}
+
+                                        </NavLink>
+
+                                    ))
+
+                                }
+
+                                <div
+                                    className="
+                                        my-3
+                                        h-px
+                                        bg-slate-200
+                                    "
+                                />
+
+                                <Link
+
+                                    to="/login"
+
+                                    onClick={() =>
+                                        setMenuOpen(false)
+                                    }
+
+                                    className="
+                                        rounded-xl
+                                        border
+                                        border-slate-300
+                                        px-4
+                                        py-3
+                                        text-center
+                                        font-semibold
+                                        text-slate-700
+                                        transition-all
+                                        duration-300
+                                        hover:border-blue-500
+                                        hover:bg-blue-50
+                                        hover:text-blue-700
+                                    "
+
+                                >
+
+                                    Login
+
+                                </Link>
+
+                                <Link
+
+                                    to="/register"
+
+                                    onClick={() =>
+                                        setMenuOpen(false)
+                                    }
+
+                                    className="
+                                        mt-2
+                                        rounded-xl
+                                        bg-gradient-to-r
+                                        from-blue-600
+                                        to-cyan-500
+                                        px-4
+                                        py-3
+                                        text-center
+                                        font-semibold
+                                        text-white
+                                        shadow-lg
+                                        shadow-blue-500/25
+                                        transition-all
+                                        duration-300
+                                        hover:shadow-blue-500/40
+                                    "
+
+                                >
+
+                                    Get Started
+
+                                </Link>
+
+                            </div>
+
+                        </motion.div>
+
+                    )
+
                 }
-              >
-                {item.name}
-              </NavLink>
-            ))}
 
-            <hr className="my-4" />
+            </AnimatePresence>
 
-            <NavLink
-              to="/login"
-              onClick={() => setMenuOpen(false)}
-              className="rounded-lg border border-blue-600 px-3 py-2 text-center font-medium text-blue-600"
-            >
-              Login
-            </NavLink>
+        </header>
 
-            <NavLink
-              to="/register"
-              onClick={() => setMenuOpen(false)}
-              className="mt-3 rounded-lg bg-blue-600 px-3 py-2 text-center font-medium text-white"
-            >
-              Register
-            </NavLink>
+    );
 
-          </div>
-        </div>
-      )}
-    </header>
-  );
 }
-
-export default Navbar;

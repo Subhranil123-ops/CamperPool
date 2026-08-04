@@ -242,3 +242,19 @@ http://localhost:3000
 - JNU
 
 ---
+
+Remember our CampusPool design philosophy.
+
+Whenever a component is marked as a placeholder, DO NOT improve it incrementally.
+
+Replace it completely with the final production version.
+
+For CampusIllustration.jsx specifically:
+
+- Do NOT use Lucide icons.
+- Build a custom SVG/vector illustration in React.
+- Create an original illustration matching CampusPool's branding.
+- Use SVG paths, gradients, filters, masks and subtle animations instead of icon libraries.
+- The illustration should depict a student ride-sharing journey (road, route, campus, vehicle) in a modern SaaS style similar in quality to Stripe, Linear or Vercel hero illustrations.
+- It must be fully responsive, animated with Framer Motion where appropriate, and reusable.
+- Treat the current Lucide version only as a temporary placeholder and replace it entirely.
