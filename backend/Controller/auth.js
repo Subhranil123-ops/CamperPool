@@ -2,22 +2,33 @@ const wrapAsync = require("../utils/wrapAsync");
 const User = require("../models/userSchema.js");
 
 module.exports.Register = wrapAsync(async (req, res) => {
-    const { username, password, hostel } = req.body;
-    let newUser = new User({ username, hostel });
+
+    const { fullname, username, email, phone, password } = req.body;
+    let newUser = new User({ fullname, username, email, phone });
     try {
+        console.log("REGISTER");
         await User.register(newUser, password);
+        return res.status(201).json({
+            success: true,
+            message: "Account created successfully! Please log in."
+        })
     } catch (err) {
-        req.flash("error", err.message);
-        return res.redirect("/auth/register");
+        console.log(err);
+        return res.status(400).json({
+            success: false,
+            message: err.message
+        })
     }
-    req.flash("success", "Account created successfully! Please log in.");
-    res.redirect("/auth/login");
 })
 
 module.exports.Login = (req, res) => {
+    console.log("LOGIN");
     const redirect = res.locals.redirect || '/rides';
-    req.flash("success", "You are successfully logged in !!");
-    res.redirect(redirect);
+    return res.status(201).json({
+        success: true,
+        message: "You are successfully logged in !!",
+        redirect
+    })
 }
 
 module.exports.Logout = (req, res, next) => {

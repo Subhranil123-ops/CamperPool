@@ -1,8 +1,18 @@
 require("dotenv").config()
 const express = require("express");
+const https = require("https");
+const fs = require("fs");
+const cors = require("cors");
 const app = express();
-const port = process.env.PORT|| 3000;
+
+app.use(cors({
+    origin: "https://localhost:5173",
+    credentials: true,
+}));
+
+const port = process.env.PORT || 3000;
 const path = require("path");
+
 const { main } = require('./config/db.js');
 const auth = require('./Routes/auth.js');
 const dashboard = require('./Routes/dashboard.js');
@@ -20,6 +30,11 @@ const sessionOptions = {
     saveUninitialized: false,
 }
 
+const sslOptions = {
+    key: fs.readFileSync("./certs/localhost+2-key.pem"),
+    cert: fs.readFileSync("./certs/localhost+2.pem")
+}
+
 app.use(session(sessionOptions));
 app.use(flash());
 app.use(passport.initialize());
@@ -34,26 +49,27 @@ app.use((req, res, next) => {
     next();
 });
 
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
-const ejsMate = require("ejs-mate");
-app.engine('ejs', ejsMate);
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/auth", auth);
 app.use("/", dashboard);
+
 app.use((err, req, res, next) => {
     console.error("REAL ERROR:", err);
-    let { status = 500, message = "Something went wrong" } = err;
-    res.status(status).render("error.ejs", {
-        message,
-        title: "Error"
-    });
+    const { status = 500, message = "Something went wrong" } = err;
+    res.status(status).json(
+        {
+            success: false,
+            message,
+        }
+    );
 });
+
 app.get("/", (req, res) => {
-  res.redirect("/rides");  
+    res.redirect("/rides");
 });
 main()
-    .then(() => app.listen(port, () => console.log("APP is connected to the port: ", port)))
+    .then(() => https.createServer(sslOptions, app).listen(port, () => console.log("APP is connected to the port: ", port)))
     .catch((err) => console.log(err));

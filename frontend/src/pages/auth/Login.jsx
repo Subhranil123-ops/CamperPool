@@ -2,51 +2,65 @@ import { Link } from "react-router-dom";
 import { Mail } from "lucide-react";
 import { useState } from "react";
 
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "../../authSchema.js";
+
 import AuthLayout from "../../components/auth/AuthLayout";
 import AuthInput from "../../components/auth/AuthInput";
 import PasswordField from "../../components/auth/PasswordField";
 import AuthButton from "../../components/auth/AuthButton";
+import axios from "axios";
+
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function Login() {
+    const navigate = useNavigate();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+    } = useForm({
+        resolver: zodResolver(loginSchema)
+    })
 
-    const [formData, setFormData] = useState({
-        username: "",
-        password: "",
-    });
+    const onSubmit = async (data) => {
 
-    const [loading, setLoading] = useState(false);
-
-    const handleChange = (e) => {
-
-        setFormData((prev) => ({
-            ...prev,
-            [e.target.name]: e.target.value,
-        }));
-
-    };
-
-    const handleSubmit = async (e) => {
-
-        e.preventDefault();
-
-        setLoading(true);
+        const toastId = toast.loading("Signing you in...");
 
         try {
+            const res = await axios.post(
+                "https://localhost:3000/auth/login",
+                data,
+                {
+                    withCredentials: true,
+                }
+            );
 
-            console.log(formData);
+            toast.success(res.data.message, {
+                id: toastId,
+            });
 
-            // axios login here
+            // setTimeout(() => {
+            //     navigate("/rides");
+            // }, 800);
 
-        } finally {
+        } catch (err) {
 
-            setTimeout(() => {
+            let message = "Something went wrong.";
 
-                setLoading(false);
+            if (!err.response) {
+                message = "Unable to connect to server.";
+            } else {
+                message = err.response.data?.message || message;
+            }
 
-            }, 1200);
+            toast.error(message, {
+                id: toastId,
+            });
 
         }
-
     };
 
     return (
@@ -57,27 +71,28 @@ export default function Login() {
         >
 
             <form
-                onSubmit={handleSubmit}
+                onSubmit={handleSubmit(onSubmit)}
                 className="space-y-7"
             >
 
                 <AuthInput
                     label="Username"
-                    type="text"
-                    name="username"
-                    value={formData.username}
-                    onChange={handleChange}
                     placeholder="Enter your username"
                     autoComplete="username"
+                    error={errors.username?.message}
+                    {...register("username")}
                     icon={<Mail size={18} />}
                 />
 
                 <PasswordField
-                    value={formData.password}
-                    onChange={handleChange}
+                    label="Password"
+                    placeholder="Enter your password"
+                    autoComplete="current-password"
+                    error={errors.password?.message}
+                    {...register("password")}
                 />
 
-                                {/* Remember Me & Forgot Password */}
+                {/* Remember Me & Forgot Password */}
 
                 <div className="flex items-center justify-between">
 
@@ -120,7 +135,7 @@ export default function Login() {
                 {/* Login Button */}
 
                 <AuthButton
-                    loading={loading}
+                    loading={isSubmitting}
                 >
                     Continue
                 </AuthButton>

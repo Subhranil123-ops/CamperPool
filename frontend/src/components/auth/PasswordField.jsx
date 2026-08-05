@@ -3,8 +3,10 @@ import { motion } from "framer-motion";
 import { Lock, Eye, EyeOff } from "lucide-react";
 
 export default function PasswordField({
-    value,
-    onChange,
+    label,
+    placeholder,
+    autoComplete,
+    ...props
 }) {
 
     const [showPassword, setShowPassword] = useState(false);
@@ -14,10 +16,10 @@ export default function PasswordField({
         <div className="space-y-2">
 
             <label
-                htmlFor="password"
+                htmlFor={props.name || props.id}
                 className="text-sm font-medium tracking-wide text-slate-300"
             >
-                Password
+                {label}
             </label>
 
             <motion.div
@@ -80,13 +82,11 @@ export default function PasswordField({
 
                 />
 
-                {/* Password */}
+                {/* Password Input */}
 
                 <input
-
-                    id="password"
-
-                    name="password"
+                    {...props}
+                    id={props.name || props.id}
 
                     type={
                         showPassword
@@ -94,14 +94,8 @@ export default function PasswordField({
                             : "password"
                     }
 
-                    value={value}
-
-                    onChange={onChange}
-
-                    autoComplete="current-password"
-
-                    placeholder="Enter your password"
-
+                    autoComplete={autoComplete}
+                    placeholder={placeholder}
                     className="
                         w-full
                         bg-transparent
@@ -112,7 +106,6 @@ export default function PasswordField({
                         placeholder:text-slate-500
                         outline-none
                     "
-
                 />
 
                 {/* Eye Button */}
@@ -122,9 +115,7 @@ export default function PasswordField({
                     type="button"
 
                     onClick={() =>
-                        setShowPassword(
-                            !showPassword
-                        )
+                        setShowPassword(!showPassword)
                     }
 
                     className="

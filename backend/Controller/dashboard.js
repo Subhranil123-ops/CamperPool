@@ -44,6 +44,7 @@ module.exports.postRideForm = wrapAsync(async (req, res) => {
 });
 
 module.exports.renderAvailableRides = wrapAsync(async (req, res) => {
+    console.log("RIDES");
     let filter = {};
     if (req.user) filter.driver = { $ne: req.user._id };
     if (req.query.from) filter.from = req.query.from;

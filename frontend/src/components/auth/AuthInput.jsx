@@ -4,18 +4,16 @@ export default function AuthInput({
   label,
   icon,
   type = "text",
-  name,
-  value,
-  onChange,
   placeholder,
   required = true,
   autoComplete = "off",
+  ...props
 }) {
   return (
     <div className="space-y-2">
 
       <label
-        htmlFor={name}
+        htmlFor={props.name || props.id}
         className="text-sm font-medium tracking-wide text-slate-300"
       >
         {label}
@@ -75,11 +73,9 @@ export default function AuthInput({
         )}
 
         <input
-          id={name}
+          {...props}
+          id={props.name}
           type={type}
-          name={name}
-          value={value}
-          onChange={onChange}
           required={required}
           autoComplete={autoComplete}
           placeholder={placeholder}
