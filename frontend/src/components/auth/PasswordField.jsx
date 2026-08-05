@@ -6,6 +6,7 @@ export default function PasswordField({
     label,
     placeholder,
     autoComplete,
+    error,
     ...props
 }) {
 
@@ -140,7 +141,13 @@ export default function PasswordField({
                 </button>
 
             </motion.div>
-
+            {
+                error && (
+                    <p className="mt-2 text-sm text-red-400">
+                        {error}
+                    </p>
+                )
+            }
         </div>
 
     );

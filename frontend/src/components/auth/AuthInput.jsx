@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 export default function AuthInput({
   label,
   icon,
+  error,
   type = "text",
   placeholder,
   required = true,
@@ -97,7 +98,13 @@ export default function AuthInput({
         />
 
       </motion.div>
-
+      {
+        error && (
+          <p className="mt-2 text-sm text-red-400">
+            {error}
+          </p>
+        )
+      }
     </div>
   );
 }

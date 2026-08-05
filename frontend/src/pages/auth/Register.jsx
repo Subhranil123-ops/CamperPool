@@ -1,46 +1,60 @@
-import { useState } from "react";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { registerSchema } from "../../schemas/authSchema";
+
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { User, Mail, Phone, AtSign } from "lucide-react";
+
 import axios from "axios";
+
 import Logo from "../../components/common/Logo";
+import AuthInput from "../../components/auth/AuthInput";
 import PasswordField from "../../components/auth/PasswordField";
 import AnimatedBackground from "../../components/auth/AnimatedBackground";
+import AuthButton from "../../components/auth/AuthButton";
 import { useNavigate } from "react-router-dom";
+
+import toast from "react-hot-toast";
 
 export default function Register() {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        fullname: "",
-        username: "",
-        email: "",
-        phone: "",
-        password: "",
-        confirmPassword: "",
-    });
 
+    const { register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+    } = useForm({ resolver: zodResolver(registerSchema) })
 
-
-    function handleChange(e) {
-        setFormData((prev) => ({
-            ...prev,
-            [e.target.name]: e.target.value,
-        }));
-    }
-
-    async function handleSubmit(e) {
-        e.preventDefault();
-        console.log(formData);
+    async function onSubmit(data) {
+        // e.preventDefault();
+        // console.log(formData);
         try {
-            const response = await axios.post("https://localhost:3000/auth/register", formData, { withCredentials: true });
+            const response = await axios.post("https://localhost:3000/auth/register", data, { withCredentials: true });
             if (response.data.success) {
-                navigate("/login");
+                toast.success(response.data.message);
+                setTimeout(() => { navigate("/login") }, 1000);
             }
         } catch (error) {
-            console.error(error.response.data);
+            let message = "Something went wrong.";
+
+            if (!error.response) {
+                message = "Unable to connect to server.";
+            } else {
+                message = error.response.data?.message || message;
+            }
+
+            toast.error(message);
         }
 
     }
+
+    const onError = (errors) => {
+        const firstError = Object.values(errors)[0];
+        if (firstError?.message) {
+            toast.error(firstError.message);
+        }
+    };
 
     return (
         <div className="relative min-h-screen overflow-hidden bg-[#09090B]">
@@ -111,131 +125,74 @@ export default function Register() {
                         </p>
 
                         <form
-                            onSubmit={handleSubmit}
+                            noValidate
+                            onSubmit={handleSubmit(onSubmit, onError)}
                             className="mt-10 space-y-6"
                         >
 
                             {/* Full Name */}
-                            <div>
-                                <label className="mb-2 block text-sm text-slate-300">
-                                    Full Name
-                                </label>
-
-                                <div className="relative">
-                                    <User
-                                        size={18}
-                                        className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
-                                    />
-
-                                    <input
-                                        type="text"
-                                        name="fullname"
-                                        value={formData.fullname}
-                                        onChange={handleChange}
-                                        placeholder="John Doe"
-                                        className="w-full rounded-xl border border-white/10 bg-white/5 py-3 pl-11 pr-4 text-white placeholder:text-slate-500 outline-none transition-all duration-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20"
-                                    />
-                                </div>
-                            </div>
+                            <AuthInput
+                                label="Full Name"
+                                placeholder="John Doe"
+                                icon={<User size={18} />}
+                                error={errors.fullname?.message}
+                                {...register("fullname")}
+                            />
 
                             {/* Username */}
-                            <div>
-                                <label className="mb-2 block text-sm text-slate-300">
-                                    Username
-                                </label>
-
-                                <div className="relative">
-                                    <AtSign
-                                        size={18}
-                                        className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
-                                    />
-
-                                    <input
-                                        type="text"
-                                        name="username"
-                                        value={formData.username}
-                                        onChange={handleChange}
-                                        placeholder="johndoe"
-                                        className="w-full rounded-xl border border-white/10 bg-white/5 py-3 pl-11 pr-4 text-white placeholder:text-slate-500 outline-none transition-all duration-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20"
-                                    />
-                                </div>
-                            </div>
+                            <AuthInput
+                                label="Username"
+                                placeholder="johndoe"
+                                icon={<AtSign size={18} />}
+                                error={errors.username?.message}
+                                {...register("username")}
+                            />
 
                             {/* Email */}
-                            <div>
-                                <label className="mb-2 block text-sm text-slate-300">
-                                    Email
-                                </label>
-
-                                <div className="relative">
-                                    <Mail
-                                        size={18}
-                                        className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
-                                    />
-
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        placeholder="john@gmail.com"
-                                        className="w-full rounded-xl border border-white/10 bg-white/5 py-3 pl-11 pr-4 text-white placeholder:text-slate-500 outline-none transition-all duration-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20"
-                                    />
-                                </div>
-                            </div>
+                            <AuthInput
+                                label="Email"
+                                type="email"
+                                placeholder="john@gmail.com"
+                                icon={<Mail size={18} />}
+                                error={errors.email?.message}
+                                {...register("email")}
+                            />
 
                             {/* Phone */}
-                            <div>
-                                <label className="mb-2 block text-sm text-slate-300">
-                                    Phone Number
-                                </label>
-
-                                <div className="relative">
-                                    <Phone
-                                        size={18}
-                                        className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
-                                    />
-
-                                    <input
-                                        type="tel"
-                                        name="phone"
-                                        value={formData.phone}
-                                        onChange={handleChange}
-                                        placeholder="+91 XXXXX XXXXX"
-                                        className="w-full rounded-xl border border-white/10 bg-white/5 py-3 pl-11 pr-4 text-white placeholder:text-slate-500 outline-none transition-all duration-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20"
-                                    />
-                                </div>
-                            </div>
+                            <AuthInput
+                                label="Phone Number"
+                                placeholder="+91 XXXXX XXXXX"
+                                icon={<Phone size={18} />}
+                                error={errors.phone?.message}
+                                {...register("phone")}
+                            />
 
                             {/* Password */}
+
                             <PasswordField
                                 label="Password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
                                 placeholder="Enter your password"
                                 autoComplete="new-password"
+                                error={errors.password?.message}
+                                {...register("password")}
                             />
 
                             {/* Confirm Password */}
+
                             <PasswordField
                                 label="Confirm Password"
-                                name="confirmPassword"
-                                value={formData.confirmPassword}
-                                onChange={handleChange}
                                 placeholder="Confirm your password"
                                 autoComplete="new-password"
+                                error={errors.confirmPassword?.message}
+                                {...register("confirmPassword")}
                             />
 
-                            <motion.button
-                                type="submit"
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: .98 }}
-                                className="w-full rounded-xl bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-500 py-3.5 font-semibold text-white shadow-lg shadow-indigo-600/30 transition-all duration-300 hover:shadow-indigo-500/40"
+                            <AuthButton
+                                loading={isSubmitting}
+                                loadingText="Creating Account..."
                             >
                                 Create Account
-                            </motion.button>
-
+                            </AuthButton>
                         </form>
 
                         <div className="my-8 flex items-center">

@@ -4,6 +4,7 @@ import { ArrowRight, LoaderCircle } from "lucide-react";
 export default function AuthButton({
   children,
   loading = false,
+  loadingText = "Loading....",
   type = "submit",
 }) {
   return (
@@ -74,7 +75,7 @@ export default function AuthButton({
               className="animate-spin"
             />
 
-            Signing In...
+            {loadingText}
 
           </>
         ) : (

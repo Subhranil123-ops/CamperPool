@@ -6,14 +6,12 @@ module.exports.Register = wrapAsync(async (req, res) => {
     const { fullname, username, email, phone, password } = req.body;
     let newUser = new User({ fullname, username, email, phone });
     try {
-        console.log("REGISTER");
         await User.register(newUser, password);
         return res.status(201).json({
             success: true,
             message: "Account created successfully! Please log in."
         })
     } catch (err) {
-        console.log(err);
         return res.status(400).json({
             success: false,
             message: err.message
@@ -22,7 +20,6 @@ module.exports.Register = wrapAsync(async (req, res) => {
 })
 
 module.exports.Login = (req, res) => {
-    console.log("LOGIN");
     const redirect = res.locals.redirect || '/rides';
     return res.status(201).json({
         success: true,

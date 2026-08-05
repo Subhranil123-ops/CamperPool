@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 import { Mail } from "lucide-react";
-import { useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "../../authSchema.js";
+import { loginSchema } from "../../schemas/authSchema";
 
 import AuthLayout from "../../components/auth/AuthLayout";
 import AuthInput from "../../components/auth/AuthInput";
@@ -27,9 +26,8 @@ export default function Login() {
 
     const onSubmit = async (data) => {
 
-        const toastId = toast.loading("Signing you in...");
-
         try {
+
             const res = await axios.post(
                 "https://localhost:3000/auth/login",
                 data,
@@ -38,13 +36,9 @@ export default function Login() {
                 }
             );
 
-            toast.success(res.data.message, {
-                id: toastId,
-            });
+            toast.success(res.data.message);
 
-            // setTimeout(() => {
-            //     navigate("/rides");
-            // }, 800);
+            // navigate("/rides");
 
         } catch (err) {
 
@@ -56,12 +50,17 @@ export default function Login() {
                 message = err.response.data?.message || message;
             }
 
-            toast.error(message, {
-                id: toastId,
-            });
-
+            toast.error(message);
         }
     };
+
+    const onError = (errors) => {
+    const firstError = Object.values(errors)[0];
+
+    if (firstError?.message) {
+        toast.error(firstError.message);
+    }
+};
 
     return (
 
@@ -71,7 +70,8 @@ export default function Login() {
         >
 
             <form
-                onSubmit={handleSubmit(onSubmit)}
+                noValidate
+                onSubmit={handleSubmit(onSubmit, onError)}
                 className="space-y-7"
             >
 
@@ -136,6 +136,7 @@ export default function Login() {
 
                 <AuthButton
                     loading={isSubmitting}
+                    loadingText="Signing In..."
                 >
                     Continue
                 </AuthButton>
