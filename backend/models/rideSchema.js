@@ -3,15 +3,22 @@ const rideSchema = new mongoose.Schema({
     driver: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        required: true,
     },
     available: {
         type: Number,
+        required: true,
+        min: 0
     },
     total: {
         type: Number,
+        required: true,
+        min: 1
     },
     vehicle: {
         type: String,
+        enum: ["Bike", "Scooty", "Car", "Bicycle", "Auto", "Other"],
+        required: true,
     },
     date: {
         type: Date,
@@ -23,20 +30,33 @@ const rideSchema = new mongoose.Schema({
     },
     from: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     to: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     status: {
         type: String,
-        default: "active"
+        enum: ["active", "cancelled", "full"],
+        default: "active",
+        required: true
     },
-    passengers:
-        [{ type: mongoose.Schema.Types.ObjectId,
-            ref:"User"
-         }]
+    passengers: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }],
+        default: []
+    },
+    notes: {
+        type: String,
+        trim: true,
+        maxlength: 200,
+        default: ""
+    }
 },
     { timestamps: true });
 

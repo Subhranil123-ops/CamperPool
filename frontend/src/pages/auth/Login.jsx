@@ -38,7 +38,7 @@ export default function Login() {
 
             toast.success(res.data.message);
 
-            // navigate("/rides");
+            navigate("/offer-lift");
 
         } catch (err) {
 

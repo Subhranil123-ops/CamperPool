@@ -17,15 +17,14 @@ const loggedInUserValidation = Joi.object({
 }).required();
 
 const rideValidation = Joi.object({
-    ride: Joi.object({
-        from: Joi.string().min(1).required(),
-        to: Joi.string().min(1).required(),
-        date: Joi.date().required(),
-        time: Joi.string().pattern(/^([01]\d|2[0-3]):([0-5]\d)$/).required(),
-        vehicle: Joi.string().min(1).required(),
-        total: Joi.number().required(),
-        available: Joi.number().required(),
-    })
+    from: Joi.string().min(1).required(),
+    to: Joi.string().min(1).required(),
+    date: Joi.date().required(),
+    time: Joi.string().pattern(/^([01]\d|2[0-3]):([0-5]\d)$/).required(),
+    vehicle: Joi.string().min(1).required(),
+    total: Joi.number().required(),
+    available: Joi.number().required(),
+    notes: Joi.string()
 }).required();
 
 module.exports = {

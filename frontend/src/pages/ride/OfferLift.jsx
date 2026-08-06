@@ -1,6 +1,7 @@
+import RideForm from "../../components/ride/RideForm"
 function OfferLift() {
     return (
-        <h1>Offer Lift</h1>
+        <RideForm />
     );
 }
 

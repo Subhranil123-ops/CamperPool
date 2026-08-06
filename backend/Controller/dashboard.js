@@ -21,27 +21,28 @@ module.exports.renderDashboard = wrapAsync(async (req, res) => {
     });
 });
 
-module.exports.renderCreaterideForm = (req, res) => {
-    res.render("./dashboard/newRide.ejs", {
-        title: "New Ride"
-    })
-};
+module.exports.postRideForm = async (req, res) => {
+    const { time, date } = req.body;
 
-module.exports.postRideForm = wrapAsync(async (req, res) => {
-    let { time, date } = req.body.ride;
-    const dateTime = new Date(date + "T" + time);
-    let currentDateTime = new Date();
-    if (dateTime < currentDateTime) {
-        req.flash("error", "Ride Date and Time can't be in the past");
-        return res.redirect("/createRide");
-    } else {
-        let newRide = new Ride(req.body.ride);
-        newRide.driver = req.user._id;
-        await newRide.save();
-        req.flash("success", "New Ride added !!");
-        res.redirect('/dashboard');
+    const dateTime = new Date(`${date}T${time}`);
+
+    if (dateTime < new Date()) {
+        return res.status(400).json({
+            success: false,
+            message: "Ride Date and Time can't be in the past"
+        });
     }
-});
+
+    const newRide = new Ride(req.body);
+    newRide.driver = req.user._id;
+
+    await newRide.save();
+
+    return res.status(201).json({
+        success: true,
+        message: "New Ride added !!"
+    });
+};
 
 module.exports.renderAvailableRides = wrapAsync(async (req, res) => {
     console.log("RIDES");

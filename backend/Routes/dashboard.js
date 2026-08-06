@@ -11,7 +11,6 @@ router
         dashboardController.renderDashboard)
 
 router.route("/createRide")
-    .get(isLoggedIn, dashboardController.renderCreaterideForm)
     .post(isLoggedIn,
         rideValidate,
         dashboardController.postRideForm);

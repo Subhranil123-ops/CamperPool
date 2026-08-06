@@ -1,7 +1,7 @@
 const { registeredUserValidation, loggedInUserValidation, rideValidation } = require("./schema.js");
 const ExpressError = require("./utils/ExpressError.js");
 const Ride = require("./models/rideSchema.js");
-const wrapAsync=require("./utils/wrapAsync.js");
+const wrapAsync = require("./utils/wrapAsync.js");
 module.exports.registeredUserValidate = (req, res, next) => {
     let result = registeredUserValidation.validate(req.body);
     if (result.error) {
@@ -28,16 +28,18 @@ module.exports.rideValidate = (req, res, next) => {
 
 module.exports.isLoggedIn = ((req, res, next) => {
     if (!req.isAuthenticated()) {
-        req.session.redirectUrl=req.originalUrl;
-        req.flash("error", "You are not logged in!");
-        return res.redirect("/auth/login");
+        req.session.redirectUrl = req.originalUrl;
+        return res.status(401).json({
+            success: false,
+            message: "You are not logged in!"
+        })
     }
     next();
 });
 
-module.exports.saveRedirect=(req,res,next)=>{
-    if(req.session?.redirectUrl){
-        res.locals.redirect=req.session.redirectUrl;
+module.exports.saveRedirect = (req, res, next) => {
+    if (req.session?.redirectUrl) {
+        res.locals.redirect = req.session.redirectUrl;
     }
     next();
 }
@@ -49,7 +51,10 @@ module.exports.isOwnerRide = wrapAsync(async (req, res, next) => {
     if (req.user._id.equals(ride.driver)) {
         return next();
     } else {
-        req.flash("error", "You are not the rider of this ride.");
+        return res.status(403).json({
+            success: false,
+            message: "You are not the rider of this ride."
+        })
         return res.redirect(`/rides/${id}`);
     }
 });
