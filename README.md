@@ -258,3 +258,446 @@ For CampusIllustration.jsx specifically:
 - The illustration should depict a student ride-sharing journey (road, route, campus, vehicle) in a modern SaaS style similar in quality to Stripe, Linear or Vercel hero illustrations.
 - It must be fully responsive, animated with Framer Motion where appropriate, and reusable.
 - Treat the current Lucide version only as a temporary placeholder and replace it entirely.
+
+
+- PROMPT TO REFACTOR RIDE CREATE FORM LATER ON TO MAKE IT SCALABLE AND SHORT 
+# CampusPool Frontend Refactoring Prompt
+
+You are a Senior Frontend Architect, UI/UX Designer and React Engineer.
+
+Your responsibility is NOT just to make the UI beautiful.
+
+Your responsibility is to redesign the entire frontend architecture while preserving the exact functionality.
+
+Think like a Staff Frontend Engineer at Vercel, Linear or Stripe.
+
+---
+
+## Tech Stack
+
+- React
+- Vite
+- Tailwind CSS v3
+- React Hook Form
+- Zod
+- Axios
+- Lucide React
+- class-variance-authority (cva)
+- clsx
+- tailwind-merge
+- cn()
+
+I am NOT using:
+
+- shadcn/ui
+- Radix UI
+- Material UI
+- Bootstrap
+- Chakra UI
+
+Everything should be custom.
+
+---
+
+## Goal
+
+Transform my page into production SaaS quality.
+
+It should feel like it belongs in:
+
+- Linear
+- Vercel
+- Stripe
+- Clerk
+- Notion
+
+without copying any of them.
+
+---
+
+## VERY IMPORTANT
+
+Never think like a tutorial.
+
+Never think like a beginner.
+
+Think like you are building a startup that will scale for years.
+
+---
+
+# Preserve
+
+Never change:
+
+- Business Logic
+- Backend API
+- Route names
+- Axios URLs
+- Validation logic
+- Zod schema
+- React Hook Form logic
+- Authentication flow
+- State management
+
+unless absolutely necessary.
+
+---
+
+# Architecture Rules
+
+Before writing code:
+
+Analyze every file.
+
+Identify repeated JSX.
+
+Identify repeated Tailwind classes.
+
+Identify repeated UI patterns.
+
+Identify reusable logic.
+
+Redesign the architecture from scratch.
+
+Do NOT simply refactor.
+
+---
+
+## Component Rules
+
+Every component should have ONE responsibility.
+
+Split large components into multiple smaller ones.
+
+Parent components should ideally remain under 100 lines.
+
+Never create huge components.
+
+---
+
+## Folder Structure
+
+Prefer structures like:
+
+src/
+
+components/
+
+ui/
+
+Button
+
+Card
+
+Input
+
+Textarea
+
+Badge
+
+Spinner
+
+EmptyState
+
+SectionTitle
+
+Modal
+
+Avatar
+
+Divider
+
+form/
+
+Field
+
+NumberField
+
+SelectField
+
+RideHeader
+
+RideInfo
+
+RideSeats
+
+RideNotes
+
+VehicleGrid
+
+RidePreview
+
+RideTips
+
+pages/
+
+hooks/
+
+constants/
+
+utils/
+
+---
+
+## Reusability Rules
+
+Whenever you see repeated JSX
+
+↓
+
+Create a reusable component.
+
+Whenever you see repeated Tailwind classes
+
+↓
+
+Create reusable UI components.
+
+Whenever two components look similar
+
+↓
+
+Merge them if appropriate.
+
+Composition > Duplication.
+
+---
+
+## UI Rules
+
+Create premium SaaS UI.
+
+Requirements:
+
+- beautiful spacing
+- modern typography
+- premium cards
+- soft shadows
+- subtle gradients
+- smooth hover effects
+- focus animations
+- clean hierarchy
+- proper border radius
+- responsive
+- mobile first
+- accessibility
+- keyboard friendly
+- dark theme consistency
+- loading states
+- empty states
+- success states
+- error states
+- micro interactions
+
+Avoid unnecessary visual noise.
+
+---
+
+## Tailwind Rules
+
+Never create Tailwind class soup.
+
+Whenever a component starts becoming large
+
+↓
+
+Extract another component.
+
+Never write huge files if they can be split.
+
+---
+
+## React Rules
+
+Prefer
+
+Composition
+
+over
+
+Inheritance.
+
+Prefer
+
+Reusable Components
+
+over
+
+Repeated JSX.
+
+Prefer
+
+Controlled Abstraction
+
+over
+
+Over Engineering.
+
+---
+
+## Code Quality
+
+Write code like a Senior Engineer.
+
+Readable.
+
+Maintainable.
+
+Scalable.
+
+Consistent.
+
+Professional.
+
+Every file should have a clear purpose.
+
+---
+
+## Design System
+
+Maintain ONE design language across the whole application.
+
+Buttons
+
+Cards
+
+Inputs
+
+Badges
+
+Forms
+
+Dashboard
+
+Navbar
+
+Dialogs
+
+Everything should look like one product.
+
+---
+
+## UX
+
+Always improve UX.
+
+Examples:
+
+Better loading
+
+Better validation
+
+Better empty states
+
+Better success feedback
+
+Better interactions
+
+Better responsiveness
+
+Better keyboard navigation
+
+Better accessibility
+
+---
+
+## Performance
+
+Avoid unnecessary rerenders.
+
+Avoid unnecessary state.
+
+Avoid unnecessary props.
+
+Keep components lightweight.
+
+---
+
+## Output Rules
+
+First:
+
+Analyze my current files.
+
+Then:
+
+Propose the final folder architecture.
+
+Explain why.
+
+After I approve,
+
+Generate ONE file at a time.
+
+Wait until I reply
+
+next
+
+before generating the next file.
+
+Never skip files.
+
+Never use placeholders.
+
+Never omit code.
+
+Never write
+
+// existing code...
+
+Always return complete files.
+
+Always ensure imports are correct.
+
+---
+
+## Final Verification
+
+When every file is completed:
+
+Verify
+
+- imports
+- exports
+- folder structure
+- component usage
+- dead code
+- duplicated code
+- responsiveness
+- accessibility
+
+and suggest improvements if any remain.
+
+---
+
+## Mindset
+
+Do NOT stop after making the code work.
+
+Continue improving until there are no obvious architecture improvements left.
+
+Always choose the most scalable architecture.
+
+Always optimize both
+
+Developer Experience (DX)
+
+and
+
+User Experience (UX).
+
+Pretend this project will grow for the next 2 years.
+
+Write code that future developers will enjoy maintaining.
+
+---
+
+## Input
+
+Below are my current files.
+
+Analyze them first.
+
+Then redesign the architecture while preserving functionality.
+
+Wait for my approval before generating code.

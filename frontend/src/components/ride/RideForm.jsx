@@ -1,406 +1,426 @@
-// RideForm.jsx (PART 1)
-
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { rideSchema } from "@/schemas/rideSchema";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useForm, Controller, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import {
-    MapPin,
-    Flag,
     CalendarDays,
     Clock3,
-    Car,
-    Users,
     FileText,
-    Plus,
-    Loader2,
+    MapPin,
+    Route,
+    Users,
 } from "lucide-react";
 
+import { rideSchema } from "@/schemas/rideSchema";
+
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+
+import Field from "@/components/form/Field";
+import VehicleSelector from "@/components/form/VehicleSelector";
+
+import RidePreview from "@/components/form/RidePreview";
+
 export default function RideForm() {
+
     const {
         register,
+        control,
         handleSubmit,
         reset,
-        formState: { errors, isSubmitting },
+        formState: {
+            errors,
+            isSubmitting,
+        },
     } = useForm({
-        resolver: zodResolver(rideSchema),
+
+        resolver: zodResolver(
+            rideSchema
+        ),
+
+        defaultValues: {
+
+            from: "",
+
+            to: "",
+
+            date: "",
+
+            time: "",
+
+            vehicle: "",
+
+            total: "",
+
+            available: "",
+
+            notes: "",
+
+        },
+
+    });
+
+    const values = useWatch({
+        control,
     });
 
     const onSubmit = async (data) => {
-        const toastId = toast.loading("Creating Ride...");
 
-        try {
-            const res = await axios.post(
-                "https://localhost:3000/createRide",
-                data,
-                {
-                    withCredentials: true,
-                }
+        const toastId =
+            toast.loading(
+                "Creating Ride..."
             );
 
-            toast.success(res.data.message, {
-                id: toastId,
-            });
+        try {
 
-            reset();
-        } catch (err) {
-            toast.error(
-                err.response?.data?.message || "Something went wrong",
+            const res =
+                await axios.post(
+                    "https://localhost:3000/createRide",
+                    data,
+                    {
+                        withCredentials: true,
+                    }
+                );
+
+            toast.success(
+                res.data.message,
                 {
                     id: toastId,
                 }
             );
+
+            reset();
+
+        } catch (err) {
+
+            toast.error(
+
+                err.response?.data
+                    ?.message ||
+
+                "Something went wrong",
+
+                {
+                    id: toastId,
+                }
+
+            );
+
         }
+
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center px-4 py-16">
-            <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute -top-32 -left-20 h-96 w-96 rounded-full bg-blue-200/30 blur-3xl"></div>
 
-                <div className="absolute bottom-0 right-0 h-[420px] w-[420px] rounded-full bg-indigo-200/30 blur-3xl"></div>
-            </div>
+        <section
+            className="
+            relative
+            min-h-screen
 
-            <div className="relative w-full max-w-5xl">
-                <div className="rounded-[32px] border border-white/60 bg-white/80 backdrop-blur-xl shadow-[0_25px_80px_rgba(15,23,42,0.12)] overflow-hidden">
+            overflow-hidden
 
-                    <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 p-10 text-white">
+            bg-[#060B16]
 
-                        <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm backdrop-blur">
+            px-6
 
-                            <Car className="h-4 w-4" />
+            py-20
+        "
+        >
 
-                            CampusPool
-                        </div>
+            <div
+                className="
+                absolute
 
-                        <h1 className="mt-6 text-4xl font-black tracking-tight">
-                            Offer a Ride
-                        </h1>
+                left-0
 
-                        <p className="mt-3 max-w-xl text-blue-100 text-lg leading-relaxed">
-                            Help fellow students travel together.
-                            Share your ride, reduce costs and make
-                            campus commuting easier.
-                        </p>
-                    </div>
+                top-0
 
-                    <form
-                        onSubmit={handleSubmit(onSubmit)}
-                        className="p-8 md:p-10"
+                h-[450px]
+
+                w-[450px]
+
+                rounded-full
+
+                bg-blue-600/10
+
+                blur-[150px]
+            "
+            />
+
+            <div
+                className="
+                absolute
+
+                right-0
+
+                bottom-0
+
+                h-[500px]
+
+                w-[500px]
+
+                rounded-full
+
+                bg-cyan-600/10
+
+                blur-[150px]
+            "
+            />
+
+            <div
+                className="
+                relative
+
+                mx-auto
+
+                max-w-7xl
+            "
+            >
+
+                <div
+                    className="
+                    mb-14
+
+                    text-center
+                "
+                >
+
+                    <p
+                        className="
+                        inline-flex
+
+                        rounded-full
+
+                        border
+
+                        border-blue-500/30
+
+                        bg-blue-500/10
+
+                        px-5
+
+                        py-2
+
+                        text-xs
+
+                        font-semibold
+
+                        uppercase
+
+                        tracking-[0.35em]
+
+                        text-blue-400
+                    "
+                    >
+                        CampusPool
+                    </p>
+
+                    <h1
+                        className="
+                        mt-8
+
+                        text-5xl
+
+                        font-black
+
+                        tracking-tight
+
+                        text-white
+                    "
+                    >
+                        Offer a Ride
+                    </h1>
+
+                    <p
+                        className="
+                        mx-auto
+
+                        mt-5
+
+                        max-w-2xl
+
+                        text-lg
+
+                        leading-8
+
+                        text-slate-400
+                    "
+                    >
+                        Share your journey with fellow students.
+                        Save fuel, reduce costs and make travelling
+                        smarter together.
+                    </p>
+
+                </div>
+
+                <div
+                    className="
+                    grid
+
+                    gap-10
+
+                    lg:grid-cols-[1.15fr_.85fr]
+                "
+                >
+
+                    <Card
+                        padding="xl"
+                        variant="gradient"
                     >
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
+                        <form
+                            onSubmit={handleSubmit(
+                                onSubmit
+                            )}
+                            className="
+                            space-y-8
+                        "
+                        >
 
-                            {/* FROM */}
+                            <div className="grid gap-8 md:grid-cols-2">
 
-                            <div className="space-y-2">
-                                <label
-                                    htmlFor="from"
-                                    className="text-sm font-semibold text-slate-700"
-                                >
-                                    Pickup Location
-                                </label>
+                                <Field
+                                    id="from"
+                                    label="Pickup Location"
+                                    placeholder="e.g. Damodar Hostel"
+                                    icon={MapPin}
+                                    error={errors.from}
+                                    {...register("from")}
+                                />
 
-                                <div
-                                    className={`group flex items-center rounded-2xl border bg-white transition-all duration-300
-                                    ${errors.from
-                                            ? "border-red-400 ring-4 ring-red-100"
-                                            : "border-slate-200 hover:border-blue-400 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100"
-                                        }`}
-                                >
-                                    <MapPin className="ml-5 h-5 w-5 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
+                                <Field
+                                    id="to"
+                                    label="Destination"
+                                    placeholder="e.g. Connaught Place"
+                                    icon={Route}
+                                    error={errors.to}
+                                    {...register("to")}
+                                />
 
-                                    <input
-                                        id="from"
-                                        type="text"
-                                        placeholder="e.g. JNU Main Gate"
-                                        {...register("from")}
-                                        className="w-full bg-transparent px-4 py-4 text-slate-700 placeholder:text-slate-400 outline-none"
+                                <Field
+                                    id="date"
+                                    type="date"
+                                    label="Journey Date"
+                                    icon={CalendarDays}
+                                    error={errors.date}
+                                    {...register("date")}
+                                />
+
+                                <Field
+                                    id="time"
+                                    type="time"
+                                    label="Departure Time"
+                                    icon={Clock3}
+                                    error={errors.time}
+                                    {...register("time")}
+                                />
+
+                            </div>
+
+                            <Controller
+                                control={control}
+                                name="vehicle"
+                                render={({ field }) => (
+                                    <VehicleSelector
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        error={errors.vehicle}
                                     />
-                                </div>
+                                )}
+                            />
 
-                                <p className="min-h-[20px] text-sm font-medium text-red-500">
-                                    {errors.from?.message}
-                                </p>
+                            <div className="grid gap-8 md:grid-cols-2">
+
+                                <Field
+                                    id="total"
+                                    type="number"
+                                    min={1}
+                                    label="Total Seats"
+                                    placeholder="4"
+                                    helper="Total seats in your vehicle."
+                                    icon={Users}
+                                    error={errors.total}
+                                    {...register("total")}
+                                />
+
+                                <Field
+                                    id="available"
+                                    type="number"
+                                    min={1}
+                                    label="Available Seats"
+                                    placeholder="3"
+                                    helper="Seats available for passengers."
+                                    icon={Users}
+                                    error={errors.available}
+                                    {...register("available")}
+                                />
+
                             </div>
 
-                            {/* TO */}
+                            <Field
+                                id="notes"
+                                textarea
+                                label="Additional Notes"
+                                placeholder="Mention pickup landmark, luggage space, AC / Non AC, or any important information..."
+                                icon={FileText}
+                                helper="Optional • Maximum 250 characters"
+                                error={errors.notes}
+                                {...register("notes")}
+                            />
 
-                            <div className="space-y-2">
-                                <label
-                                    htmlFor="to"
-                                    className="text-sm font-semibold text-slate-700"
-                                >
-                                    Destination
-                                </label>
+                            <div className="rounded-3xl border border-slate-800 bg-slate-900/40 p-6">
 
-                                <div
-                                    className={`group flex items-center rounded-2xl border bg-white transition-all duration-300
-                                    ${errors.to
-                                            ? "border-red-400 ring-4 ring-red-100"
-                                            : "border-slate-200 hover:border-blue-400 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100"
-                                        }`}
-                                >
-                                    <Flag className="ml-5 h-5 w-5 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
+                                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
 
-                                    <input
-                                        id="to"
-                                        type="text"
-                                        placeholder="e.g. Connaught Place"
-                                        {...register("to")}
-                                        className="w-full bg-transparent px-4 py-4 text-slate-700 placeholder:text-slate-400 outline-none"
-                                    />
-                                </div>
+                                    <div>
 
-                                <p className="min-h-[20px] text-sm font-medium text-red-500">
-                                    {errors.to?.message}
-                                </p>
-                            </div>
+                                        <h3 className="text-lg font-bold text-white">
+                                            Ready to publish?
+                                        </h3>
 
-                            {/* DATE */}
+                                        <p className="mt-2 text-sm leading-6 text-slate-400">
+                                            Your ride will become visible to
+                                            students immediately after creation.
+                                            Make sure every detail is correct.
+                                        </p>
 
-                            <div className="space-y-2">
-                                <label
-                                    htmlFor="date"
-                                    className="text-sm font-semibold text-slate-700"
-                                >
-                                    Journey Date
-                                </label>
-
-                                <div
-                                    className={`group flex items-center rounded-2xl border bg-white transition-all duration-300
-                                    ${errors.date
-                                            ? "border-red-400 ring-4 ring-red-100"
-                                            : "border-slate-200 hover:border-blue-400 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100"
-                                        }`}
-                                >
-                                    <CalendarDays className="ml-5 h-5 w-5 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
-
-                                    <input
-                                        id="date"
-                                        type="date"
-                                        {...register("date")}
-                                        className="w-full bg-transparent px-4 py-4 text-slate-700 outline-none"
-                                    />
-                                </div>
-
-                                <p className="min-h-[20px] text-sm font-medium text-red-500">
-                                    {errors.date?.message}
-                                </p>
-                            </div>
-
-                            {/* TIME */}
-
-                            <div className="space-y-2">
-                                <label
-                                    htmlFor="time"
-                                    className="text-sm font-semibold text-slate-700"
-                                >
-                                    Departure Time
-                                </label>
-
-                                <div
-                                    className={`group flex items-center rounded-2xl border bg-white transition-all duration-300
-                                    ${errors.time
-                                            ? "border-red-400 ring-4 ring-red-100"
-                                            : "border-slate-200 hover:border-blue-400 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100"
-                                        }`}
-                                >
-                                    <Clock3 className="ml-5 h-5 w-5 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
-
-                                    <input
-                                        id="time"
-                                        type="time"
-                                        {...register("time")}
-                                        className="w-full bg-transparent px-4 py-4 text-slate-700 outline-none"
-                                    />
-                                </div>
-
-                                <p className="min-h-[20px] text-sm font-medium text-red-500">
-                                    {errors.time?.message}
-                                </p>
-                            </div>
-
-                            {/* VEHICLE */}
-
-                            <div className="space-y-2">
-                                <label
-                                    htmlFor="vehicle"
-                                    className="text-sm font-semibold text-slate-700"
-                                >
-                                    Vehicle
-                                </label>
-
-                                <div
-                                    className={`group flex items-center rounded-2xl border bg-white transition-all duration-300
-                                    ${errors.vehicle
-                                            ? "border-red-400 ring-4 ring-red-100"
-                                            : "border-slate-200 hover:border-blue-400 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100"
-                                        }`}
-                                >
-                                    <Car className="ml-5 h-5 w-5 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
-
-                                    <select
-                                        id="vehicle"
-                                        {...register("vehicle")}
-                                        className="w-full appearance-none bg-transparent px-4 py-4 text-slate-700 outline-none cursor-pointer"
-                                    >
-                                        <option value="">
-                                            Select your vehicle
-                                        </option>
-
-                                        <option value="Car">
-                                            🚗 Car
-                                        </option>
-
-                                        <option value="Bike">
-                                            🏍 Bike
-                                        </option>
-
-                                        <option value="Auto">
-                                            🛺 Auto
-                                        </option>
-                                    </select>
-                                </div>
-
-                                <p className="min-h-[20px] text-sm font-medium text-red-500">
-                                    {errors.vehicle?.message}
-                                </p>
-                            </div>
-
-                            {/* TOTAL SEATS */}
-
-                            <div className="space-y-2">
-                                <label
-                                    htmlFor="total"
-                                    className="text-sm font-semibold text-slate-700"
-                                >
-                                    Total Seats
-                                </label>
-
-                                <div
-                                    className={`group flex items-center rounded-2xl border bg-white transition-all duration-300
-                                    ${errors.total
-                                            ? "border-red-400 ring-4 ring-red-100"
-                                            : "border-slate-200 hover:border-blue-400 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100"
-                                        }`}
-                                >
-                                    <Users className="ml-5 h-5 w-5 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
-
-                                    <input
-                                        id="total"
-                                        type="number"
-                                        min={1}
-                                        placeholder="4"
-                                        {...register("total")}
-                                        className="w-full bg-transparent px-4 py-4 text-slate-700 placeholder:text-slate-400 outline-none"
-                                    />
-                                </div>
-
-                                <p className="min-h-[20px] text-sm font-medium text-red-500">
-                                    {errors.total?.message}
-                                </p>
-                            </div>
-
-                            {/* AVAILABLE */}
-
-                            <div className="space-y-2">
-                                <label
-                                    htmlFor="available"
-                                    className="text-sm font-semibold text-slate-700"
-                                >
-                                    Available Seats
-                                </label>
-
-                                <div
-                                    className={`group flex items-center rounded-2xl border bg-white transition-all duration-300
-                                    ${errors.available
-                                            ? "border-red-400 ring-4 ring-red-100"
-                                            : "border-slate-200 hover:border-blue-400 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100"
-                                        }`}
-                                >
-                                    <Users className="ml-5 h-5 w-5 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
-
-                                    <input
-                                        id="available"
-                                        type="number"
-                                        min={1}
-                                        placeholder="3"
-                                        {...register("available")}
-                                        className="w-full bg-transparent px-4 py-4 text-slate-700 placeholder:text-slate-400 outline-none"
-                                    />
-                                </div>
-
-                                <p className="min-h-[20px] text-sm font-medium text-red-500">
-                                    {errors.available?.message}
-                                </p>
-                            </div>
-
-                            {/* NOTES */}
-
-                            <div className="md:col-span-2 space-y-2">
-                                <label
-                                    htmlFor="notes"
-                                    className="text-sm font-semibold text-slate-700"
-                                >
-                                    Additional Notes
-                                </label>
-
-                                <div
-                                    className={`group rounded-2xl border bg-white transition-all duration-300
-                                    ${errors.notes
-                                            ? "border-red-400 ring-4 ring-red-100"
-                                            : "border-slate-200 hover:border-blue-400 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100"
-                                        }`}
-                                >
-                                    <div className="flex items-start gap-4 px-5 pt-5">
-                                        <FileText className="mt-1 h-5 w-5 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
-
-                                        <textarea
-                                            id="notes"
-                                            rows={5}
-                                            placeholder="Pickup landmark, luggage information, contact instructions..."
-                                            {...register("notes")}
-                                            className="w-full resize-none bg-transparent text-slate-700 placeholder:text-slate-400 outline-none"
-                                        />
                                     </div>
-                                </div>
 
-                                <p className="min-h-[20px] text-sm font-medium text-red-500">
-                                    {errors.notes?.message}
-                                </p>
-                            </div>
+                                    <div className="flex flex-wrap gap-3">
 
-                        </div>
+                                        <span
+                                            className="
+                                            rounded-full
+                                            border
+                                            border-blue-500/20
+                                            bg-blue-500/10
+                                            px-4
+                                            py-2
+                                            text-xs
+                                            font-semibold
+                                            tracking-wide
+                                            text-blue-300
+                                        "
+                                        >
+                                            Verified Users
+                                        </span>
 
-                        {/* Footer */}
-
-                        <div className="mt-10 flex flex-col gap-6 border-t border-slate-200 pt-8">
-
-                            <div className="flex flex-wrap items-center justify-between gap-4">
-
-                                <div>
-                                    <h3 className="text-lg font-bold text-slate-800">
-                                        Ready to share your ride?
-                                    </h3>
-
-                                    <p className="mt-1 text-sm text-slate-500">
-                                        Double-check the details before publishing.
-                                    </p>
-                                </div>
-
-                                <div className="hidden md:flex items-center gap-3">
-
-                                    <div className="rounded-xl border border-blue-100 bg-blue-50 px-4 py-2">
-
-                                        <p className="text-xs font-medium uppercase tracking-wider text-blue-600">
+                                        <span
+                                            className="
+                                            rounded-full
+                                            border
+                                            border-emerald-500/20
+                                            bg-emerald-500/10
+                                            px-4
+                                            py-2
+                                            text-xs
+                                            font-semibold
+                                            tracking-wide
+                                            text-emerald-300"
+                                        >
                                             Secure
-                                        </p>
-
-                                        <p className="mt-1 text-sm text-slate-700">
-                                            Only logged in users can offer rides
-                                        </p>
+                                        </span>
 
                                     </div>
 
@@ -408,41 +428,208 @@ export default function RideForm() {
 
                             </div>
 
-                            <button
+                            <Button
                                 type="submit"
-                                disabled={isSubmitting}
-                                className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 px-8 py-5 font-semibold text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-blue-300/40 disabled:cursor-not-allowed disabled:opacity-70"
+                                loading={isSubmitting}
+                                size="lg"
+                                className="w-full rounded-2xl text-base"
                             >
+                                Offer Ride
+                            </Button>
 
-                                <span className="absolute inset-0 bg-white/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
+                        </form>
 
-                                <span className="relative flex items-center justify-center gap-3">
+                    </Card>
 
-                                    {isSubmitting ? (
-                                        <>
-                                            <Loader2 className="h-5 w-5 animate-spin" />
-                                            Creating Ride...
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Plus className="h-5 w-5 transition-transform duration-300 group-hover:rotate-90" />
-                                            Offer Ride
-                                        </>
-                                    )}
+                    <div className="space-y-8">
 
-                                </span>
+                        <RidePreview
 
-                            </button>
+                            from={values.from}
 
-                        </div>
+                            to={values.to}
 
-                    </form>
+                            date={values.date}
+
+                            time={values.time}
+
+                            vehicle={values.vehicle}
+
+                            total={values.total}
+
+                            available={values.available}
+
+                        />
+
+                        <Card
+                            variant="glass"
+                            padding="lg"
+                        >
+
+                            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-blue-400">
+                                Tips
+                            </p>
+
+                            <div className="mt-6 space-y-5">
+
+                                <div className="flex gap-4">
+
+                                    <div className="mt-1 h-3 w-3 rounded-full bg-blue-500" />
+
+                                    <p className="text-sm leading-7 text-slate-300">
+                                        Keep the pickup location precise to
+                                        avoid confusion.
+                                    </p>
+
+                                </div>
+
+                                <div className="flex gap-4">
+
+                                    <div className="mt-1 h-3 w-3 rounded-full bg-cyan-500" />
+
+                                    <p className="text-sm leading-7 text-slate-300">
+                                        Mention luggage space or special
+                                        conditions in the notes section.
+                                    </p>
+
+                                </div>
+
+                                <div className="flex gap-4">
+
+                                    <div className="mt-1 h-3 w-3 rounded-full bg-emerald-500" />
+
+                                    <p className="text-sm leading-7 text-slate-300">
+                                        Arrive a few minutes early for a smooth
+                                        departure.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </Card>
+
+                    </div>
 
                 </div>
 
             </div>
 
-        </div>
+            {/* Background Decoration */}
+
+            <div
+                className="
+                pointer-events-none
+
+                absolute
+
+                left-20
+
+                top-32
+
+                h-72
+
+                w-72
+
+                rounded-full
+
+                bg-blue-500/5
+
+                blur-[120px]
+            "
+            />
+
+            <div
+                className="
+                pointer-events-none
+
+                absolute
+
+                bottom-10
+
+                right-20
+
+                h-80
+
+                w-80
+
+                rounded-full
+
+                bg-cyan-500/5
+
+                blur-[150px]
+            "
+            />
+
+            <div
+                className="
+                pointer-events-none
+
+                absolute
+
+                top-1/2
+
+                left-1/2
+
+                h-[700px]
+
+                w-[700px]
+
+                -translate-x-1/2
+
+                -translate-y-1/2
+
+                rounded-full
+
+                border
+
+                border-blue-500/5
+            "
+            />
+
+            <div
+                className="
+                pointer-events-none
+
+                absolute
+
+                top-1/2
+
+                left-1/2
+
+                h-[900px]
+
+                w-[900px]
+
+                -translate-x-1/2
+
+                -translate-y-1/2
+
+                rounded-full
+
+                border
+
+                border-cyan-500/5
+            "
+            />
+
+            <div
+                className="
+                pointer-events-none
+
+                absolute
+
+                inset-0
+
+                bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)]
+
+                bg-[size:80px_80px]
+
+                opacity-40
+            "
+            />
+
+        </section>
 
     );
 
