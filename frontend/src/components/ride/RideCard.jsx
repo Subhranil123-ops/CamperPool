@@ -1,222 +1,203 @@
-import { Link } from "react-router-dom";
 import {
-    MapPin,
-    ArrowDown,
-    Clock3,
-    Bike,
-    User,
-    Users,
     ArrowRight,
+    CalendarDays,
+    Clock3,
+    MapPin,
+    Route,
 } from "lucide-react";
+import { Link } from "react-router-dom";
+
+import Card from "@/components/ui/Card";
+import Button from "@/components/ui/Button";
+
+import VehicleIcon from "./VehicleIcon";
+import DriverAvatar from "./DriverAvatar";
+import StatusBadge from "./StatusBadge";
+import SeatBadge from "./SeatBadge";
 
 export default function RideCard({ ride }) {
     return (
-        <div
+        <Card
             className="
-        group
-        rounded-3xl
-        border
-        border-white/10
-        bg-white/5
-        backdrop-blur-xl
-        shadow-lg
-        p-6
-        transition-all
-        duration-300
-        hover:-translate-y-1
-        hover:border-indigo-500/40
-        hover:shadow-indigo-500/20
-      "
+                group
+                relative
+                overflow-hidden
+                rounded-3xl
+                border
+                border-slate-800
+                bg-slate-900/70
+                backdrop-blur-xl
+                transition-all
+                duration-500
+                hover:-translate-y-2
+                hover:border-cyan-500/30
+                hover:shadow-2xl
+                hover:shadow-cyan-500/10
+            "
         >
-            {/* Top */}
+            {/* Glow */}
 
-            <div className="flex items-center justify-between">
+            <div className="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-cyan-500/10 blur-3xl transition-all duration-500 group-hover:bg-cyan-500/20" />
 
-                <span
-                    className={`
-          rounded-full
-          px-3
-          py-1
-          text-xs
-          font-semibold
-          capitalize
-          ${ride.status === "active"
-                            ? "bg-green-500/20 text-green-400"
-                            : ride.status === "full"
-                                ? "bg-yellow-500/20 text-yellow-400"
-                                : "bg-red-500/20 text-red-400"
-                        }
-        `}
-                >
-                    {ride.status}
-                </span>
+            <div className="relative z-10">
 
-                <div className="flex items-center gap-2 text-sm text-slate-300">
-                    <Users size={16} />
-                    {ride.available}/{ride.total} Seats
-                </div>
-            </div>
+                {/* Top */}
 
-            {/* Route */}
+                <div className="flex items-start justify-between">
 
-            <div className="mt-8 space-y-4">
+                    <div className="flex items-center gap-4">
 
-                {/* From */}
+                        <VehicleIcon vehicle={ride.vehicle} />
 
-                <div className="flex gap-4">
+                        <div>
 
-                    <div className="rounded-full bg-indigo-500/10 p-2">
-                        <MapPin size={18} className="text-indigo-400" />
-                    </div>
+                            <p className="text-xs uppercase tracking-[0.25em] text-slate-500">
+                                Vehicle
+                            </p>
 
-                    <div>
+                            <h3 className="mt-1 text-xl font-bold text-white">
+                                {ride.vehicle}
+                            </h3>
 
-                        <p className="text-xs uppercase tracking-wider text-slate-400">
-                            From
-                        </p>
-
-                        <h3 className="font-semibold text-white">
-                            {ride.from}
-                        </h3>
+                        </div>
 
                     </div>
 
-                </div>
-
-                <div className="ml-5">
-
-                    <ArrowDown
-                        size={18}
-                        className="text-slate-500"
-                    />
-
-                </div>
-
-                {/* Destination */}
-
-                <div className="flex gap-4">
-
-                    <div className="rounded-full bg-pink-500/10 p-2">
-                        <MapPin
-                            size={18}
-                            className="text-pink-400"
-                        />
-                    </div>
-
-                    <div>
-
-                        <p className="text-xs uppercase tracking-wider text-slate-400">
-                            To
-                        </p>
-
-                        <h3 className="font-semibold text-white">
-                            {ride.to}
-                        </h3>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            {/* Divider */}
-
-            <div className="my-6 border-t border-white/10"></div>
-
-            {/* Ride Meta */}
-
-            <div className="space-y-4">
-
-                {/* Time */}
-
-                <div className="flex items-center gap-3 text-slate-300">
-
-                    <Clock3
-                        size={18}
-                        className="text-indigo-400"
-                    />
-
-                    <span>
-                        {ride.date} • {ride.time}
-                    </span>
-
-                </div>
-
-                {/* Vehicle */}
-
-                <div className="flex items-center gap-3 text-slate-300">
-
-                    <Bike
-                        size={18}
-                        className="text-indigo-400"
-                    />
-
-                    <span>{ride.vehicle}</span>
+                    <StatusBadge status={ride.status} />
 
                 </div>
 
                 {/* Driver */}
 
-                <div className="flex items-center gap-3 text-slate-300">
+                <div className="mt-8">
 
-                    <User
-                        size={18}
-                        className="text-indigo-400"
+                    <DriverAvatar
+                        username={ride.driver?.username}
                     />
 
-                    <span>
-                        {ride.driver?.username || "Unknown"}
-                    </span>
+                </div>
+
+                {/* Route */}
+
+                <div className="my-8 rounded-2xl border border-slate-800 bg-slate-950/40 p-5">
+
+                    <div className="flex gap-4">
+
+                        <div className="flex flex-col items-center">
+
+                            <div className="rounded-full bg-blue-500/20 p-2">
+                                <MapPin className="h-4 w-4 text-blue-400" />
+                            </div>
+
+                            <div className="h-12 border border-dashed border-slate-700" />
+
+                            <div className="rounded-full bg-emerald-500/20 p-2">
+                                <Route className="h-4 w-4 text-emerald-400" />
+                            </div>
+
+                        </div>
+
+                        <div className="flex-1">
+
+                            <div>
+
+                                <p className="text-xs uppercase tracking-widest text-slate-500">
+                                    Pickup
+                                </p>
+
+                                <h4 className="mt-1 text-lg font-semibold text-white">
+                                    {ride.from}
+                                </h4>
+
+                            </div>
+
+                            <div className="mt-8">
+
+                                <p className="text-xs uppercase tracking-widest text-slate-500">
+                                    Destination
+                                </p>
+
+                                <h4 className="mt-1 text-lg font-semibold text-white">
+                                    {ride.to}
+                                </h4>
+
+                            </div>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
-            </div>
+                {/* Info */}
 
-            {/* Footer */}
+                <div className="grid grid-cols-2 gap-4">
 
-            <div className="mt-6 border-t border-white/10 pt-5">
+                    <div className="rounded-2xl bg-slate-800/60 p-4">
 
-                <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-slate-400">
+                            <CalendarDays className="h-4 w-4 text-cyan-400" />
+                            <span className="text-xs uppercase tracking-wider">
+                                Date
+                            </span>
+                        </div>
 
-                    <p className="text-sm text-slate-400">
-                        {ride.available > 0
-                            ? "Seats Available"
-                            : "Ride Full"}
-                    </p>
+                        <p className="mt-3 font-semibold text-white">
+                            {new Date(ride.date).toLocaleDateString()}
+                        </p>
 
-                    <Link
-                        to={`/rides/${ride._id}`}
+                    </div>
+
+                    <div className="rounded-2xl bg-slate-800/60 p-4">
+
+                        <div className="flex items-center gap-2 text-slate-400">
+                            <Clock3 className="h-4 w-4 text-cyan-400" />
+                            <span className="text-xs uppercase tracking-wider">
+                                Time
+                            </span>
+                        </div>
+
+                        <p className="mt-3 font-semibold text-white">
+                            {ride.time}
+                        </p>
+
+                    </div>
+
+                </div>
+
+                {/* Seats */}
+
+                <div className="mt-6">
+
+                    <SeatBadge
+                        available={ride.available}
+                        total={ride.total}
+                    />
+
+                </div>
+
+                {/* CTA */}
+
+                <Link
+                    to={`/rides/${ride._id}`}
+                    className="mt-8 block"
+                >
+                    <Button
                         className="
-              flex
-              items-center
-              gap-2
-              rounded-xl
-              bg-indigo-600
-              px-4
-              py-2
-              text-sm
-              font-medium
-              text-white
-              transition
-              hover:bg-indigo-500
-            "
+                            w-full
+                            justify-center
+                            gap-2
+                            text-base
+                            group-hover:gap-4
+                        "
                     >
                         View Ride
-
-                        <ArrowRight
-                            size={18}
-                            className="
-                transition-transform
-                group-hover:translate-x-1
-              "
-                        />
-
-                    </Link>
-
-                </div>
+                        <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                    </Button>
+                </Link>
 
             </div>
 
-        </div>
+        </Card>
     );
 }

@@ -45,8 +45,8 @@ module.exports.postRideForm = async (req, res) => {
 };
 
 module.exports.renderAvailableRides = wrapAsync(async (req, res) => {
-    console.log("RIDES");
     let filter = {};
+
     if (req.user) filter.driver = { $ne: req.user._id };
     if (req.query.from) filter.from = req.query.from;
     if (req.query.to) filter.to = req.query.to;
@@ -55,28 +55,32 @@ module.exports.renderAvailableRides = wrapAsync(async (req, res) => {
     else {
         filter.status = "active";
     }
-    let selectedDate = new Date(req.query?.date);
-    let start = new Date(selectedDate);
-    start.setHours(0, 0, 0, 0);
-    let end = new Date(selectedDate);
-    end.setHours(23, 59, 59, 999);
-    if (req.query.date) filter.date = {
-        $lte: end,
-        $gte: start
+
+    if (req.query.date) {
+        const selectedDate = new Date(req.query?.date);
+        const start = new Date(selectedDate);
+        start.setHours(0, 0, 0, 0);
+        const end = new Date(selectedDate);
+        end.setHours(23, 59, 59, 999);
+        filter.date = {
+            $lte: end,
+            $gte: start
+        }
     }
+
     let rides = await Ride.find(filter).populate('driver');
     let fromOptions = await Ride.distinct("from");
     let toOptions = await Ride.distinct("to");
     let vehicleOptions = await Ride.distinct("vehicle");
     let statusOptions = await Ride.distinct("status");
-    res.render("./dashboard/rides.ejs", {
-        title: "Rides",
+
+    return res.status(200).json({
+        success: true,
         rides,
         fromOptions,
         toOptions,
         vehicleOptions,
         statusOptions,
-        query: req.query
     });
 });
 
@@ -86,10 +90,10 @@ module.exports.showRide = wrapAsync(async (req, res) => {
         .populate('driver')
         .populate('passengers');
     if (!ride) throw new ExpressError(400, "Ride not found");
-    res.render("./dashboard/showRide.ejs", {
-        title: "Ride",
+    return res.status(200).json({
+        success: true,
         ride
-    });
+    })
 });
 
 module.exports.joinRide = wrapAsync(async (req, res) => {
