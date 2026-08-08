@@ -13,191 +13,134 @@ import VehicleIcon from "./VehicleIcon";
 import StatusBadge from "./StatusBadge";
 
 export default function RideHero({ ride }) {
+    const formattedDate = ride?.date
+        ? new Date(ride.date).toLocaleDateString(undefined, {
+              weekday: "short",
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+          })
+        : "Date unavailable";
 
     return (
         <Card
             className="
-                relative
-                overflow-hidden
-                rounded-[36px]
-                border
-                border-slate-800
-                bg-gradient-to-br
-                from-slate-950
-                via-slate-900
-                to-slate-950
-                p-8
-                shadow-[0_25px_70px_rgba(0,0,0,.35)]
+                relative overflow-hidden rounded-[36px]
+                border border-slate-800
+                bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950
+                p-7 shadow-[0_25px_70px_rgba(0,0,0,.35)]
+                sm:p-9
             "
         >
-
-            {/* Glow */}
-
-            <div className="absolute -left-20 -top-20 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl" />
-
-            <div className="absolute right-0 bottom-0 h-80 w-80 rounded-full bg-blue-500/10 blur-3xl" />
+            <div className="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-cyan-500/10 blur-[90px]" />
+            <div className="absolute -bottom-32 -right-20 h-96 w-96 rounded-full bg-blue-500/10 blur-[110px]" />
 
             <div className="relative z-10">
-
-                {/* Back */}
-
                 <Link to="/find-lift">
-
-                    <Button
-                        variant="ghost"
-                        className="mb-8 gap-2"
-                    >
+                    <Button variant="ghost" className="mb-8 gap-2">
                         <ArrowLeft className="h-4 w-4" />
-
-                        Back
-
+                        Back to rides
                     </Button>
-
                 </Link>
 
-                {/* Header */}
-
-                <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-
+                <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                     <div className="flex items-center gap-5">
-
-                        <VehicleIcon
-                            vehicle={ride.vehicle}
-                            className="h-8 w-8"
-                        />
-
-                        <div>
-
-                            <p className="text-sm uppercase tracking-[0.3em] text-slate-400">
-
-                                Ride Details
-
-                            </p>
-
-                            <h1 className="mt-2 text-4xl font-black text-white">
-
-                                {ride.vehicle} Ride
-
-                            </h1>
-
+                        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-cyan-500/20 bg-cyan-500/10">
+                            <VehicleIcon
+                                vehicle={ride.vehicle}
+                                className="h-8 w-8 text-cyan-400"
+                            />
                         </div>
 
+                        <div>
+                            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
+                                Ride Details
+                            </p>
+
+                            <h1 className="mt-2 text-3xl font-black tracking-tight text-white sm:text-4xl">
+                                {ride.from}{" "}
+                                <span className="text-cyan-400">→</span>{" "}
+                                {ride.to}
+                            </h1>
+
+                            <p className="mt-2 text-sm text-slate-400">
+                                {ride.vehicle} • {ride.time}
+                            </p>
+                        </div>
                     </div>
 
                     <StatusBadge status={ride.status} />
-
                 </div>
 
-                {/* Route */}
+                <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+                        <div className="flex items-center gap-3 text-slate-400">
+                            <CalendarDays className="h-5 w-5 text-cyan-400" />
+                            <span className="text-sm">Travel Date</span>
+                        </div>
 
-                <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_auto_1fr]">
+                        <p className="mt-3 font-bold text-white">
+                            {formattedDate}
+                        </p>
+                    </div>
 
-                    {/* Pickup */}
+                    <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+                        <div className="flex items-center gap-3 text-slate-400">
+                            <Clock3 className="h-5 w-5 text-blue-400" />
+                            <span className="text-sm">Departure</span>
+                        </div>
 
-                    <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6">
+                        <p className="mt-3 font-bold text-white">
+                            {ride.time || "Time unavailable"}
+                        </p>
+                    </div>
 
-                        <p className="flex items-center gap-2 text-sm uppercase tracking-widest text-cyan-300">
+                    <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 sm:col-span-2 lg:col-span-1">
+                        <div className="flex items-center gap-3 text-slate-400">
+                            <Route className="h-5 w-5 text-emerald-400" />
+                            <span className="text-sm">Route</span>
+                        </div>
 
+                        <p className="mt-3 truncate font-bold text-white">
+                            {ride.from} → {ride.to}
+                        </p>
+                    </div>
+                </div>
+
+                <div className="mt-8 grid gap-4 md:grid-cols-[1fr_auto_1fr]">
+                    <div className="rounded-3xl border border-cyan-500/10 bg-slate-900/60 p-6">
+                        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-cyan-400">
                             <MapPin className="h-4 w-4" />
-
                             Pickup
+                        </div>
 
-                        </p>
-
-                        <h2 className="mt-4 text-2xl font-bold text-white">
-
+                        <h2 className="mt-3 text-xl font-bold text-white">
                             {ride.from}
-
                         </h2>
-
                     </div>
 
-                    {/* Route */}
-
-                    <div className="flex items-center justify-center">
-
-                        <div className="flex flex-col items-center">
-
-                            <div className="h-3 w-3 rounded-full bg-cyan-400" />
-
-                            <div className="h-20 border border-dashed border-cyan-500/40" />
-
-                            <Route className="h-6 w-6 text-cyan-400" />
-
-                            <div className="h-20 border border-dashed border-cyan-500/40" />
-
-                            <div className="h-3 w-3 rounded-full bg-emerald-400" />
-
+                    <div className="hidden items-center justify-center md:flex">
+                        <div className="flex items-center gap-2">
+                            <div className="h-2.5 w-2.5 rounded-full bg-cyan-400 shadow-[0_0_18px_rgba(34,211,238,.7)]" />
+                            <div className="h-px w-16 bg-gradient-to-r from-cyan-400/60 to-emerald-400/60" />
+                            <Route className="h-5 w-5 text-slate-500" />
+                            <div className="h-px w-16 bg-gradient-to-r from-emerald-400/60 to-cyan-400/60" />
+                            <div className="h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(52,211,153,.7)]" />
                         </div>
-
                     </div>
 
-                    {/* Destination */}
-
-                    <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6">
-
-                        <p className="flex items-center gap-2 text-sm uppercase tracking-widest text-emerald-300">
-
+                    <div className="rounded-3xl border border-emerald-500/10 bg-slate-900/60 p-6">
+                        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-emerald-400">
                             <Route className="h-4 w-4" />
-
                             Destination
+                        </div>
 
-                        </p>
-
-                        <h2 className="mt-4 text-2xl font-bold text-white">
-
+                        <h2 className="mt-3 text-xl font-bold text-white">
                             {ride.to}
-
                         </h2>
-
                     </div>
-
                 </div>
-
-                {/* Bottom */}
-
-                <div className="mt-10 grid gap-5 md:grid-cols-2">
-
-                    <div className="rounded-2xl bg-slate-800/60 p-5">
-
-                        <div className="flex items-center gap-2 text-slate-400">
-
-                            <CalendarDays className="h-4 w-4 text-cyan-400" />
-
-                            Date
-
-                        </div>
-
-                        <h3 className="mt-3 text-xl font-bold text-white">
-
-                            {new Date(ride.date).toLocaleDateString()}
-
-                        </h3>
-
-                    </div>
-
-                    <div className="rounded-2xl bg-slate-800/60 p-5">
-
-                        <div className="flex items-center gap-2 text-slate-400">
-
-                            <Clock3 className="h-4 w-4 text-cyan-400" />
-
-                            Departure Time
-
-                        </div>
-
-                        <h3 className="mt-3 text-xl font-bold text-white">
-
-                            {ride.time}
-
-                        </h3>
-
-                    </div>
-
-                </div>
-
             </div>
-
         </Card>
     );
 }

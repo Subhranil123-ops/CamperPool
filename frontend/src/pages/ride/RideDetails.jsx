@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-
+import axios from "axios";
+import { useParams } from "react-router-dom";
 import RideHero from "@/components/ride/RideHero";
 import DriverCard from "@/components/ride/DriverCard";
 import RideOverview from "@/components/ride/RideOverview";
@@ -7,7 +8,7 @@ import PassengerList from "@/components/ride/PassengerList";
 import RideActions from "@/components/ride/RideActions";
 
 export default function RideDetails() {
-
+    const { id } = useParams();
     const [ride, setRide] = useState(null);
 
     const [loading, setLoading] = useState(true);
@@ -22,7 +23,7 @@ export default function RideDetails() {
 
         fetchRide();
 
-    }, []);
+    }, [id]);
 
     const fetchRide = async () => {
 
@@ -32,13 +33,16 @@ export default function RideDetails() {
 
             setError("");
 
-            // Call backend
+            const res = await axios.get(`https://localhost:3000/rides/${id}`);
+            console.log(res.data.ride);
+            setRide(res.data.ride);
 
         }
 
         catch (err) {
 
             setError("Unable to load ride.");
+            console.log(err.response?.data?.message);
 
         }
 
@@ -154,7 +158,7 @@ export default function RideDetails() {
 
                 <RideHero ride={ride} />
 
-                                <div className="mt-10 grid gap-8 xl:grid-cols-[1.25fr_.75fr]">
+                <div className="mt-10 grid gap-8 xl:grid-cols-[1.25fr_.75fr]">
 
                     {/* Left Column */}
 
@@ -290,7 +294,7 @@ export default function RideDetails() {
 
                 </div>
 
-                                {/* Bottom CTA */}
+                {/* Bottom CTA */}
 
                 <div className="relative mt-12 overflow-hidden rounded-[36px] border border-slate-800 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-10">
 
